@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head id="Head1"><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><title>
+	The place to search for Nasa
+</title><meta name="description" /><meta name="viewport" content="width=device-width" /><link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" /><link rel="search" type="application/opensearchdescription+xml" href="/JerusalemWebSearch.xml" title="Search the web with Jerusalem search" /><link href="http://fonts.googleapis.com/css?family=Just+Another+Hand" rel="stylesheet" type="text/css" /><link rel="stylesheet" href="/content/themes/normalize.css" /><link rel="stylesheet" href="/content/themes/main.min.css" />
+
+        <script src="/scripts/modernizr-2.6.2.min.js"></script>
+
+		
+	<style>
+		.som {
+			display: none;
+		}
+		@media (max-width: 770px) {
+			.som {
+				display: block;
+			}
+		}
+		#mobile-caption {
+			font: 400 28px 'Just Another Hand',cursive,Helvetica,sans-serif;
+			color: #9ec561;
+			text-align: center;
+		}
+		#search-wrapper h3 {
+			margin: 10px auto 0;
+			text-align: left;
+		}
+
+		#search-wrapper .suggestions {
+			text-align: center;
+			display: inline-block;
+		}
+
+			#search-wrapper .suggestions a {
+				margin: 0 10px;
+			}
+
+	</style>
+
+		<style>
+			#action-message-button,
+			#action-message {
+				color: #9ec561;
+				-webkit-text-shadow: none;
+				text-shadow: none;
+			}
+
+            #action-message {
+                font-size: 28px;
+                top: -65px;
+                width: 370px;
+            }
+			#action-message-button .arrow {
+				background-image: url('/img/upwards-handdrawn-arrow-green-thick.png');
+			}
+			#action-message .arrow {
+				background-image: url('/img/handdrawn-arrow-green-thick.png');
+                top: 14px;
+			}
+			#init-homepage-wrapper.search-main,
+			.search-submit.search-main,
+			.search-query-wrapper {
+				-moz-box-shadow: none;
+				-webkit-box-shadow: none;
+				box-shadow: none;
+			}
+		</style>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/" target="_blank">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+		<form method="get" action="//search.jerusalem.com/y/8/web/" id="aspnetForm">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTE5NTA3MzUyNDQPZBYCZg9kFgICAw8WAh4GYWN0aW9uBR8vL3NlYXJjaC5qZXJ1c2FsZW0uY29tL3kvOC93ZWIvZGSv2+rTv5WRtzOfkGyd3mQK/fp22qeDK1ilz9URxM739w==" />
+
+			<div id="body" style="background: none;">
+				<header>
+					<nav class="container top">
+						<ul class="left pull-left categories">
+							<li><a href="//search.jerusalem.com/y/8/web/&amp;utm_source=D&amp;utm_medium=FW&amp;utm_campaign=y_affiliate+8" data-search-category="web" class="search-category highlight">Search</a></li>
+							<li><a href="//search.jerusalem.com/y/8/images/&amp;utm_source=D&amp;utm_medium=FW&amp;utm_campaign=y_affiliate+8" data-search-category="images" class="search-category">Images</a></li>
+							<li><a href="//search.jerusalem.com/y/8/video/&amp;utm_source=D&amp;utm_medium=FW&amp;utm_campaign=y_affiliate+8" data-search-category="video" class="search-category">Videos</a></li>
+							<li><a href="//search.jerusalem.com/y/8/news/&amp;utm_source=D&amp;utm_medium=FW&amp;utm_campaign=y_affiliate+8" data-search-category="news" class="search-category">News</a></li>
+							<li><a href="http://hotels.jerusalem.com?label=search_home" target="_blank" class="hotels-link">Hotels</a></li>
+						</ul>
+						<a href="//jerusalem.com" rel="logo" class="pull-right">
+							<img alt="Jerusalem.com" src="/img/logos/search.jerusalem-logo-l.png" height="30" />
+						</a>
+					</nav>
+				</header>
+				<div id="main" class="search-main">
+					<input type="hidden" id="urlParams" value="&amp;utm_source=D&amp;utm_medium=FW&amp;utm_campaign=y_affiliate+8" />
+					
+	<div id="search-wrapper" class="search-h">
+		<div class="center vertical2">
+			<div id="action-message" class="hoss" style="display: none;"><span class="arrow"></span>NORTH AMERICAN SEARCH AUTHORITY (NASA)</div>
+			<span class="search-query-wrapper">
+				<input type="search" id="q" name="q" class="search-query search-main" value="" placeholder="" />
+			</span>
+			<input type="submit" id="searchSubmit" class="search-submit search-main" value="Search" />
+			<div id="action-message-button" class="hoss" style="display: none;"><span class="arrow"></span></div>
+		</div>
+		<div class="som" id="mobile-caption">
+			NORTH AMERICAN SEARCH AUTHORITY (NASA)
+		</div>
+		<div class="hoss center search-main" id="init-homepage-wrapper">
+			Make <a id="init-homepage" href="javascript:;">Jerusalem Search</a> your homepage <br />
+		</div>
+		<div>
+			<div class="suggestions">
+			<h3><em>Suggestions:</em></h3>
+				
+				<a href="http://search.jerusalem.com/y/8/web/?q=daily+deals">Daily Deals</a>
+				<span class="sep">|</span>
+				<a href="http://search.jerusalem.com/y/8/web/?q=satellite+images">Satellite images</a>
+				<span class="sep">|</span>
+				<a href="http://search.jerusalem.com/y/8/web/?q=satellite+tv">Satellite tv</a>
+				<span class="sep">|</span>
+				<a href="http://search.jerusalem.com/y/8/web/?q=free+images">Free Images</a>
+				<span class="sep">|</span>
+				<a href="http://search.jerusalem.com/y/8/web/?q=satellite">Satellite</a>
+				
+			</div>
+		</div>
+	</div>
+	<div id="modal-Leaving" class="modal hide fade hoss">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h1>Leaving already?</h1>
+			<h2>Didn't find what you were looking for?</h2>
+		</div>
+		<div class="modal-body search-h">
+			<input type="search" id="Search1" class="search-query search-main" value="" placeholder="Search for it"/>
+			<input type="submit" id="Submit1" class="search-submit search-main" value="Search" />
+			<nav class="categories">
+				<ul class="left pull-left">
+					<li><a href="//search.jerusalem.com/y/8/web/" data-search-category="web" class="search-category highlight">Search</a></li>
+					<li><a href="//search.jerusalem.com/y/8/images/" data-search-category="images" class="search-category">Images</a></li>
+					<li><a href="//search.jerusalem.com/y/8/video/" data-search-category="video" class="search-category">Videos</a></li>
+					<li><a href="//search.jerusalem.com/y/8/news/" data-search-category="news" class="search-category">News</a></li>
+				</ul>
+			</nav>
+		</div>
+		<div class="modal-footer center">
+				
+		</div>
+	</div>
+
+				</div>
+
+				<footer>
+					<nav class="container">
+						<ul class="left pull-right">
+							<li><a href="//jerusalem.com/contact" target="_blank">Contact<span class="hoss"> us</span></a></li>
+							<li>|</li>
+							<li><a href="//jerusalem.com/privacy" target="_blank">Privacy<span class="hoss"> Policy</span></a></li>
+							<li>|</li>
+							<li><a href="//jerusalem.com/terms" target="_blank">Terms<span class="hoss"> of Use</span></a></li>
+							<li>|</li>
+							<li><a href="//jerusalem.com/about" target="_blank">About<span class="hoss"> Jerusalem.com</span></a></li>
+						</ul>
+					</nav>
+				</footer>
+			</div>
+
+			<div id="modal-homepage" class="modal hide fade">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h1>MAKE 'Jerusalem Search' YOUR HOMEPAGE</h1>
+					<h2>With just 3 easy steps you can search the web with Jerusalem Search!</h2>
+				</div>
+				<div class="modal-body">
+					<ul id="homepage-instructions">
+						<li>
+							<h3>1.</h3>
+							<div class="homepage-instruction-box safari">
+								Click on the <strong>‘Safari’</strong> button and then select <strong>‘Preferences’</strong>.
+							</div>
+							<div class="homepage-instruction-box firefox">
+								Click on the <strong>‘Firefox’</strong> button and then select <strong>‘Options’</strong>.
+							</div>
+							<div class="homepage-instruction-box chrome">
+								Click the settings icon<br />
+								<img alt="Google Chrome options" src="/img/icons/chrome-options.jpg" title="Google Chrome options" width="23" height="23" /><br />
+								at the top right of your browser, and select: <strong>‘Settings’</strong>.
+							</div>
+						</li>
+						<li>
+							<h3>2.</h3>
+							<div class="homepage-instruction-box safari">
+								Select the <strong>‘General’</strong> panel.
+							</div>
+							<div class="homepage-instruction-box firefox">
+								Select the <strong>‘General’</strong> panel.
+							</div>
+							<div class="homepage-instruction-box chrome">
+								Under <strong>‘On Startup’</strong>, select <strong>‘Open a specific page or set of pages’</strong>.<br />
+								<br />
+								Click <strong>‘Set pages’</strong>, enter ‘search.jerusalem.com/y/home’, and click ‘OK’.
+							</div>
+						</li>
+						<li>
+							<h3>3.</h3>
+							<div class="homepage-instruction-box safari">
+								Select <strong>‘Set to Current Page’</strong> and click <strong>‘OK’</strong>.
+							</div>
+							<div class="homepage-instruction-box firefox">
+								In the <strong>’Home Page’</strong> line, type: <strong>‘search.jerusalem.com/y/home’</strong> and click <strong>‘OK’</strong>.
+							</div>
+							<div class="homepage-instruction-box chrome">
+								Under <strong>‘Appearance’</strong>, check <strong>‘Show home button’</strong>.<br />
+								<br />
+								Click <strong>‘Change’</strong>, enter ‘search.jerusalem.com/y/home’ and click <strong>‘OK’</strong>.
+							</div>
+						</li>
+					</ul>	
+				</div>
+				<div class="modal-footer center">
+					<p>Jerusalem.com - Jerusalem for Everyone, Everywhere</p>
+					<div><a href="//jerusalem.com/contact" target="_blank">Contact<span class="hoss"> us</span></a> | <a href="//jerusalem.com/terms" target="_blank">Terms<span class="hoss"> of Use</span></a> | <a href="//jerusalem.com/privacy" target="_blank">Privacy<span class="hoss"> Policy</span></a></div>
+				</div>
+			</div>
+		</form>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="/scripts/jquery-1.9.1.min.js"><\/script>')</script>
+        <script src="/scripts/bootstrap.min.js"></script>
+        <script src="/scripts/internal/plugins.js"></script>
+        <script src="/scripts/internal/main.js"></script>
+
+		
+<script>
+	var ispace_txtElements = ['q', 'Search1'];
+	var ispace_brand = 'jerusalem';
+</script>
+<script src="http://imagecdn.infospace.com/search/lib/ptwidget-1.0.js"></script>
+<script>
+	function setCookie(c_name, value, exdays) {
+		var exdate = new Date();
+		exdate.setDate(exdate.getDate() + exdays);
+		var c_value = escape(value) + ((exdays == null) ? "" : "; expires=" + exdate.toUTCString());
+		document.cookie = c_name + "=" + c_value;
+	}
+
+	function hasCookie(c_name) {
+		var cookies = document.cookie.split('; ');
+		var hasCookie = false;
+		for (var i = 0; i < cookies.length; i++) {
+			if (cookies[i].split('=')[0] === c_name) {
+				hasCookie = true;
+				break;
+			}
+		}
+		return hasCookie;
+	}
+
+	var placeholderAnimInterval = null;
+	var pausePlaceholderAnim = false;
+
+	function PlaceholderAnim() {
+		var $target = $('.search-query');
+		$target.attr("placeholder", "");
+		var animtext = ["", "", ""];
+		var currentText = "";
+		var textCounter = 0;
+		var prevIntCount = 0;
+		jQuery({
+			count: 0
+		}).delay(2500).animate({
+			count: animtext[0].length
+		}, {
+			duration: animtext[0].length * 150,
+			step: function () {
+				$target.attr("placeholder", currentText);
+				if (prevIntCount == textCounter && textCounter < animtext[0].length) {
+					currentText += animtext[0][textCounter];
+					textCounter++;
+				}
+				else if (textCounter == animtext[0].length) {
+					textCounter = 0;
+				}
+				prevIntCount = Math.round(this.count);
+			},
+			complete: function () {
+				currentText = "";
+				jQuery({
+					count: 0
+				}).delay(animtext[0].length * 150 + 1000).animate({
+					count: animtext[1].length
+				}, {
+					duration: animtext[1].length * 150,
+					step: function () {
+						$target.attr("placeholder", currentText);
+						if (prevIntCount == textCounter && textCounter < animtext[1].length) {
+							currentText += animtext[1][textCounter];
+							textCounter++;
+						}
+						else if (textCounter == animtext[1].length) {
+							textCounter = 0;
+						}
+						prevIntCount = Math.round(this.count);
+					},
+					complete: function () {
+						currentText = "";
+						jQuery({
+							count: 0
+						}).delay(animtext[1].length * 150 + 1000).animate({
+							count: animtext[2].length
+						}, {
+							duration: animtext[2].length * 150,
+							step: function () {
+								$target.attr("placeholder", currentText);
+								if (prevIntCount == textCounter && textCounter < animtext[2].length) {
+									currentText += animtext[2][textCounter];
+									textCounter++;
+								}
+								else if (textCounter == animtext[2].length) {
+									textCounter = 0;
+								}
+								prevIntCount = Math.round(this.count);
+							},
+							complete: function () {
+								currentText = "";
+								placeholderAnimInterval = setTimeout(PlaceholderAnim, 5000);
+							}
+						});
+					}
+				});
+			}
+		});
+	}
+
+	var modalShown = false;
+	var queryEntered = false;
+	var prevQuery = "";
+	var lastQuery = "";
+	var mY = 0;
+	var movedToTop = false;
+	var horzAcceptable = false;
+	var mTravelDistance = 0;
+	var travelDistanceThreshold = 9000000;
+	var popinTimeThreshold = 7000;
+	var popupEligible = false;
+	$(function () {
+		$(".aspNetHidden").remove();
+
+		$('.search-query').focus();
+
+		PlaceholderAnim();
+
+		$("body").mousemove(function (e) {
+			movedToTop = e.pageY < mY;
+			mY = e.pageY;
+			mTravelDistance += (e.pageY + e.pageX) * (e.pageY + e.pageX);
+			if (mTravelDistance >= travelDistanceThreshold) {
+				popupEligible = true;
+				mTravelDistance = 0;
+			}
+		}).mouseleave(function (e) {
+			horzAcceptable = e.pageX >= 0 && e.pageX <= $(window).width();
+			if (!modalShown && movedToTop && horzAcceptable && popupEligible) {
+				modalShown = true;
+				horzAcceptable = false;
+				movedToTop = false;
+				$("#modal-Leaving").modal("show");
+				_gaq.push(['_trackEvent', 'JerusalemSearch', 'Leaving already popup', 'shown']);
+			}
+		});
+
+		$(".modal").on('shown', function () {
+			$(this).find("input[type=search]").eq(0).focus();
+		});
+
+		$(".search-submit").click(function (e) {
+			var prevQuery = "";
+			var $siblingQuery = $(this).parents(".search-h").eq(0).find('.search-query');
+			var val = $siblingQuery.val();
+			if (val == "") {
+				e.preventDefault();
+			}
+			else if (prevQuery !== "") {
+				if (val !== prevQuery) {
+					_gaq.push(['_trackEvent', 'JerusalemSearch', 'query submitted', 'prev query: "' + prevQuery + '"; new query: "' + val + '"']);
+				}
+				else {
+					_gaq.push(['_trackEvent', 'JerusalemSearch', 'query resubmitted', 'query: "' + prevQuery + '"']);
+				}
+			}
+			else {
+				_gaq.push(['_trackEvent', 'JerusalemSearch', 'query submitted', 'query: "' + val + '"']);
+			}
+		});
+
+		$('.search-query').keyup(function () {
+			var val = encodeURI($(this).val());
+			var baseUrl = "//search.jerusalem.com/y/8";
+			var baseParams = $("#urlParams").val();
+			var $allSearchQueries = $('.search-query');
+			if ($(this).val() != lastQuery) {
+				$allSearchQueries.not(this).val($(this).val());
+			}
+			//update category links
+			$('.categories a.search-category').each(function (e) {
+				var newHref = baseUrl + "/" + $(this).attr('data-search-category') + "/" + "?q=" + val + baseParams;
+				$(this).attr('href', newHref);
+			});
+			if (!queryEntered) {
+				_gaq.push(['_trackEvent', 'JerusalemSearch', 'query changed', 'front page']);
+				queryEntered = true;
+				//change the arrow
+				$("#action-message").fadeOut();
+
+				$("#action-message-button").delay(1000).fadeIn({
+					easing: 'swing', duration: '500', complete: function () {
+						$("#action-message-button .arrow").fadeIn();
+					}
+				});
+			}
+			lastQuery = $(this).val();
+			
+		});
+
+		$(".categories a.search-category").click(function (e) {
+			e.preventDefault();
+			var q = $('.search-query').val();
+			if (q.trim() === "") {
+				$(".categories a.search-category").each(function () {
+					$(this).removeClass("highlight");
+				});
+				$(this).addClass("highlight");
+				$("#aspnetForm").attr("action", "//search.jerusalem.com/y/8/" + $(this).attr('data-search-category') + "/");
+				$('.search-query').focus();
+			}
+			else {
+				window.location.href = $(this).attr("href");
+			}
+		});
+
+		$(".suggestions a").click(function () {
+			var term = $(this).text();
+			_gaq.push(['_trackEvent', 'JerusalemSearch', 'suggestion link clicked', ' term: "' + term + '"']);
+		});
+
+		$("#body").click(function (e) {
+			$('.search-query').focus();
+		});
+
+		//$("#init-search-provider").click(function (e) {
+		//	e.preventDefault();
+		//	if (typeof window.external.AddSearchProvider !== "undefined") {
+		//		window.external.AddSearchProvider("http://search.jerusalem.com/JerusalemWebSearch.xml");
+		//	}
+		//});
+
+		$(".hotels-link").click(function () {
+			_gaq.push(['_trackEvent', 'JerusalemSearch', 'hotels link clicked', 'main page']);
+		});
+
+		$('#init-homepage').click(function (e) {
+			e.preventDefault();
+			this.style.behavior = "url('#default#homepage')";
+			_gaq.push(['_trackEvent', 'JerusalemSearch', 'user clicked set homepage link', 'front page']);
+			if (typeof this.setHomePage !== 'undefined') {
+				//add this page as homepage
+				this.setHomePage('search.jerusalem.com/y/home');
+			} else {
+				var ua;
+				//show instructions popup
+				//show for chrome
+				if ($.browser.chrome) {
+					ua = "chrome";
+				}
+					//show for safari
+				else if ($.browser.webkit) {
+					ua = "safari";
+				}
+					//show for firefox
+				else if ($.browser.mozilla) {
+					ua = "firefox";
+				}
+				if (ua && $(".homepage-instruction-box." + ua).length > 0) {
+					$(".homepage-instruction-box." + ua).show();
+					$('#modal-homepage').modal('show');
+				}
+				else {
+					console.log('unrecognized user agent');
+				}
+			}
+			setCookie("DailyPhoto", 1, 365);
+			$("#init-homepage-wrapper").removeClass("blink");
+			$("#action-message").fadeOut();
+		});
+
+			$("#action-message").delay(1000).fadeIn({
+				easing: 'swing', duration: '500', complete: function () {
+					$("#action-message .arrow").fadeIn();
+				}
+			});
+
+		var popinTimeout = setTimeout(function () { popupEligible = true; }, popinTimeThreshold);
+	});
+</script>
+
+
+
+
+        <script>
+        	var _gaq = _gaq || [];
+        	_gaq.push(['_setAccount', 'UA-21009902-1']);
+        	_gaq.push(['_trackPageview']);
+
+        	(function () {
+        		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        	})();
+		</script>
+		<script>
+			var sc_project = 8673956;
+			var sc_invisible = 1;
+			var sc_security = "00836d49";
+			var scJsHost = (("https:" == document.location.protocol) ?
+			"https://secure." : "http://www.");
+			document.write("<sc" + "ript type='text/javascript' src='" + scJsHost +
+			"statcounter.com/counter/counter.js'></" + "script>");
+		</script>
+		<noscript>
+			<div class="statcounter">
+				<a title="web analytics"
+					href="http://statcounter.com/" target="_blank">
+					<img class="statcounter"
+						src="http://c.statcounter.com/8673956/0/00836d49/1/" alt="web analytics"></a>
+			</div>
+		</noscript>
+    </body>
+</html>

@@ -25,7 +25,27 @@ http.createServer(function(request, response) {
 		if(request.url == "/GetSite"){
 			response.writeHead(200, {"Content-Type": "text/plain"});
 			data = qs.parse(data)
-			response.write("GetSite aufgerufen!\n" + "Type: " + data.Calltype + "\nUrlList: " + data.UrlList);
+			//Form parameters
+			response.write("GetSite aufgerufen!\n" + "Project: " + data.project + "\nUrl: " + data.url + "\nPattern: " + data.pattern + "\nLimit: " + data.limit);
+			
+			//Get Webpage
+			var externalrequest = require('request');
+				externalrequest(data.UrlList, function (error, response, body) {
+			if (!error && response.statusCode == 200) {
+				var fs = require('fs');
+				fs.writeFile(__dirname + "/tmp/asddas", body, function(err) {
+					if(err) {
+						console.log(err);
+					} else {
+				console.log("The file was saved!");
+			}
+			}); 
+			//console.log(body) // Print the google web page.
+		} else {
+			console.log("No webpage found! " + response.statusCode + " " + data.UrlList );
+		}
+})
+			
 			response.end();
 		}
 	});

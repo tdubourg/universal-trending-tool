@@ -3,6 +3,14 @@
 <meta charset="utf-8">
 
 <link href="nvd3/src/nv.d3.css" rel="stylesheet" type="text/css">
+<!-- Latest compiled and minified CSS -->
+
+<!-- Optional theme -->
+
+<link rel="stylesheet" href="boots/css/bootstrap_3.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
 <style>
 
@@ -33,11 +41,34 @@ svg {
 </style>
 <body onload="initData()">
 <div id="formPost">
+
+
 <form name=getsiteform method="post" action="http://localhost:8888/GetSite">
-    <input type="text" name="Calltype">
-    <input type="text" name="UrlList">
-    <input type="submit" value="Submit">
+    <table>
+      <tr>
+        <td><label for="project">Projekt:</label></td>
+        <td><input type="text" id="project" name="project" value="" class="form-control"></td>
+      </tr>
+      <tr>
+        <td><label for="url">Url:</label></td>
+        <td><input type="text" id="url" name="url" value=""></td>
+      </tr>
+      <tr>
+        <td><label for="pattern">Pattern:</label></td>
+        <td><input type="text" id="pattern" name="pattern"></td>
+      </tr>
+	  <tr>
+        <td><label for="limit">Limit:</label></td>
+        <td><input type="text" id="limit" name="limit"></td>
+      </tr>
+	  <tr>
+        <td colspan="2" align="center"><input type="submit" value="Submit"></td>
+      </tr>
+    </table>
 </form>
+
+
+
 </div>
   <div id="chart1">
     <svg></svg>
