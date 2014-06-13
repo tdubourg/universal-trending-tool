@@ -3,7 +3,10 @@ var http = require("http"),
     path = require("path"),
     fs = require("fs")
     port = process.argv[2] || 8888;
-var qs 		    = require('querystring');	
+var qs 		    = require('querystring');
+var sqlite3 = require('sqlite3');	
+var dbPath = "database.db";
+var db = new sqlite3.Database(dbPath);
 
 http.createServer(function(request, response) {
 
@@ -26,14 +29,18 @@ http.createServer(function(request, response) {
 			response.writeHead(200, {"Content-Type": "text/plain"});
 			data = qs.parse(data)
 			//Form parameters
-			response.write("GetSite aufgerufen!\n" + "Project: " + data.project + "\nUrl: " + data.url + "\nPattern: " + data.pattern + "\nLimit: " + data.limit);
+			response.write("GetSite aufgerufen!\n" + "DATA_TO_MATCH" + data.data  + "Project: " + data.project + "\nUrl: " + data.url + "\nPattern: " + data.pattern + "\nLimit: " + data.limit);
 			
 			//Get Webpage
 			var externalrequest = require('request');
-				externalrequest(data.UrlList, function (error, response, body) {
+			console.log("Making request to " + data.url );
+				externalrequest(data.url, function (error, response, body) {
 			if (!error && response.statusCode == 200) {
 				var fs = require('fs');
-				fs.writeFile(__dirname + "/tmp/asddas", body, function(err) {
+				var stmt = db.prepare("INSERT INTO SEARCH(DATA_TO_MATCH, HTML_LEARNING_DATA, URL, NAME, PATTERN) VALUES(?,?,?,?,?)");
+				stmt.run(data.data, body, data.url, data.project, data.pattern); 
+				stmt.finalize();
+				fs.writeFile(__dirname + "/tmp/" + data.project, body, function(err) {
 					if(err) {
 						console.log(err);
 					} else {
@@ -61,8 +68,8 @@ http.createServer(function(request, response) {
   path.exists(filename, function(exists) {
     if(!exists) {
 	
-		var sqlite3 = require('sqlite3');
-		var dbPath = "database.db";
+		
+		
 		fs.exists(dbPath, function(exists) {
 			if(exists) {
 				console.log("bin da");
@@ -80,7 +87,7 @@ http.createServer(function(request, response) {
 		}
 	]
 		
-	var db = new sqlite3.Database(dbPath);
+	
 	
 	var stmt = "SELECT page, score FROM result";
 	db.each(stmt, function(err, row) {
