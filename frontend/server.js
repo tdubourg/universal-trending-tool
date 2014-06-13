@@ -17,8 +17,16 @@ http.createServer(function(request, response) {
 
   path.exists(filename, function(exists) {
     if(!exists) {
+	
+		var sqlite3 = require('sqlite3').verbose();
+		var db = new sqlite3.Database(':memory:');
+		db.each("SELECT Page,Score FROM RESULT", function(err, row) {
+			console.log(row.id + ": " + row.thing);
+		});
+  
+	
       response.writeHead(404, {"Content-Type": "text/plain"});
-      response.write("404 Not Found\n");
+      response.write(row);
       response.end();
       return;
     }
