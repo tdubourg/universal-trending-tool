@@ -3,7 +3,8 @@ var http = require("http"),
     path = require("path"),
     fs = require("fs")
     port = process.argv[2] || 8888;
-var qs 		    = require('querystring');
+var qs 		    = require('querystring');	
+
 http.createServer(function(request, response) {
 
   console.log("request URL is: " + request.url);
@@ -28,8 +29,6 @@ http.createServer(function(request, response) {
 			response.end();
 		}
 	});
-	
-	
 	
 
 	
@@ -68,16 +67,17 @@ http.createServer(function(request, response) {
 		console.log(row.PAGE + ": " + row.SCORE);
 		
 		d = {}
-		d[row.PAGE] = row.SCORE;
+		//d[row.PAGE] = row.SCORE;
+		d["label"] = row.PAGE;
+		d["value"] = row.SCORE;
 		
 		jsonResponse[0].values.push(d); 
 		
 	  	
 	}, function(err,rows) {
-		 response.writeHead(200, {"Content-Type": "application/json"});
+		 response.writeHead(200, {"Content-Type": "text/plain"});
 		 response.write(JSON.stringify(jsonResponse));
 		 response.end();
-	
 	});
   
 
