@@ -1,3 +1,3 @@
 #!/bin/sh
 
-sqlite ../db.db < db_init.txt
+sqlite3 ../db.db < db_init.txt
