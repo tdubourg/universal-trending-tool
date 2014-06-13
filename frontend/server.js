@@ -3,20 +3,33 @@ var http = require("http"),
     path = require("path"),
     fs = require("fs")
     port = process.argv[2] || 8888;
-
+var qs 		    = require('querystring');
 http.createServer(function(request, response) {
 
   console.log("request URL is: " + request.url);
   var uri = url.parse(request.url).pathname
     , filename = path.join(process.cwd(), uri);
-
-	if(request.url == "/GetSite"){
 	
+	var data = '';
 	
-		response.writeHead(200, {"Content-Type": "text/plain"});
-		response.write("GetSite aufgerufen!\n" + " " + request.body );
-		response.end();
+	if(request.method === "POST") {
+		request.addListener("data", function(postDataChunk) {
+			data += postDataChunk;
+			//console.log("Received POST data chunk '"+ postDataChunk + "'.");
+			console.log("POST data sent");
+		});
 	}
+	
+	request.addListener("end", function() {
+		if(request.url == "/GetSite"){
+			response.writeHead(200, {"Content-Type": "text/plain"});
+			data = qs.parse(data)
+			response.write("GetSite aufgerufen!\n" + "Type: " + data.Calltype + "\nUrlList: " + data.UrlList);
+			response.end();
+		}
+	});
+	
+	
 	
 
 	
