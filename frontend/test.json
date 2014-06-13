@@ -1,11 +1,4 @@
-[ 
-  {
-    "key": "Cumulative Return",
-    "values": [
-      { 
-        "label" : "A" ,
-        "value" : 29.765957771107
-      } , 
+[   {    "key": "Cumulative Return",    "values": [      {         "label" : "A" ,        "value" : 29.765957771107      } , 
       { 
         "label" : "B" , 
         "value" : 80

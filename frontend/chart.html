@@ -32,11 +32,13 @@ svg {
 
 </style>
 <body onload="initData()">
-<form method="post" action="http://localhost:8888/GetSite">
-    <input type="text" name="name">
-    <input type="text" name="email">
+<div id="formPost">
+<form name=getsiteform method="post" action="http://localhost:8888/GetSite">
+    <input type="text" name="Calltype">
+    <input type="text" name="UrlList">
     <input type="submit" value="Submit">
 </form>
+</div>
   <div id="chart1">
     <svg></svg>
   </div>
@@ -78,8 +80,8 @@ function drawGraph(historicalBarChart) {
 	});
 }
 function initData() {
-	$.getJSON( "http://localhost:8888/test.json", function( data ) {
-	  drawGraph(data);
+	$.getJSON( "http://localhost:8888/test.jsons", function( data ) {
+	  drawGraph((data));
 	});
 }
 
