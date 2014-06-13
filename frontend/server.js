@@ -4,6 +4,17 @@ var http = require("http"),
     fs = require("fs")
     port = process.argv[2] || 8888;
 var qs 		    = require('querystring');	
+var exec = require('child_process').exec;
+
+var test_learning = function (file_path, data_to_match, callback) {
+	exec("python ../backend/learning_test.py", function (err, stdout, stderr) {
+		if (err || stdout !== "0") {
+			console.log("Test for", file_path, "and data to match", data_to_match, "failed with error code", stdout)
+			callback(false)
+		}
+		callback(true)
+	})
+}
 
 http.createServer(function(request, response) {
 
@@ -33,11 +44,20 @@ http.createServer(function(request, response) {
 				externalrequest(data.UrlList, function (error, response, body) {
 			if (!error && response.statusCode == 200) {
 				var fs = require('fs');
-				fs.writeFile(__dirname + "/tmp/asddas", body, function(err) {
+				var fname = __dirname + "/tmp/asddas"
+				fs.writeFile(fname, body, function(err) {
 					if(err) {
 						console.log(err);
 					} else {
 				console.log("The file was saved!");
+				// Now, test it:
+				test_learning(fname, "test", function (result) {
+					if (result === true) {
+						response.write("\nThe learning test failed.")
+					} else {
+						response.write("\nThe learning test succeeded!")
+					}
+				})
 			}
 			}); 
 			//console.log(body) // Print the google web page.
