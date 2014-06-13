@@ -6,11 +6,13 @@ https://github.com/tdubourg/collaborative-personalized-pagerank/blob/master/web_
 from scrapy.contrib.spiders import Rule
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.spider import Spider
-from trending_monitor.items import TrendingMonitorItem
+# from trending_monitor.items import TrendingMonitorItem
 from scrapy.http import Request
 from time import time
 from slybot.utils import htmlpage_from_response
 from scrapely import Scraper, HtmlPage
+from scrapy import signals
+from scrapy.xlib.pydispatch import dispatcher
 import sys
 
 # import re
@@ -52,8 +54,6 @@ class TrendingSpider(Spider):
     name="trending_monitor"
     """docstring for TrendingSpider"""
     start_urls = []
-    X_FIRST_LINKS_TO_FOLLOW_SAME_DOMAIN = 3  # We only follow the X first links of every page for same domain
-    X_FIRST_LINKS_TO_FOLLOW_OTHER_DOMAINS = 7  # We only follow the X first links of every page for different domains
     PRINT_STATS_EVERY_X_CRAWLED_PAGES = 100
     links_rule = None
     urls_seen = set()
@@ -85,6 +85,11 @@ class TrendingSpider(Spider):
             callback='parse_item'
         )
         super(TrendingSpider, self).__init__()
+        dispatcher.connect(self.spider_closed, signals.spider_closed)
+
+    def spider_closed(self):
+        if self.db is not None:
+            self.db.commit()
 
     def parse(self, response):
         self.crawled_pages += 1
@@ -100,15 +105,17 @@ class TrendingSpider(Spider):
             print "\n", response.url, "-> We are currently at depth=", str(response.meta['metadepth']), "of start_url=", response.meta['start_url']
             delta = time()-self.start_time
             print "Current crawl speed: ", self.crawled_pages, "urls crawled,", delta, "seconds,", self.crawled_pages / delta, "pages/second"
-        item = TrendingMonitorItem()
         html_p = htmlpage_from_response(response)
         scraped_result = self.scraper.scrape_page(html_p)
         print "\n===============================" * 2
         print scraped_result
         print "\n===============================" * 2
-        item['url'] = response.url
-        item['score'] = scraped_result[0]['score'][0]
-        item['time'] = time()
+        item = (
+            response.url,
+            scraped_result[0]['score'][0],
+            time()
+        )
+        self.save_to_db(item)
         if self.urls_limit is not 0 and self.crawled_pages >= self.urls_limit:
             return  # We do not scrap the links, this time
         unique_new_links = set(
@@ -120,6 +127,16 @@ class TrendingSpider(Spider):
         print "Got", len(unique_new_links), "new links"
         self.urls_seen |= unique_new_links
         return [Request(link.url) for link in unique_new_links]
+
+    def save_to_db(self, item):
+        self.db.execute('INSERT INTO result(TIMESTAMP, SCORE, PAGE, SEARCH_ID) VALUES(?, ?, ?, ?)',
+            (
+                item[2],
+                item[1],
+                item[0],
+                item[self.project_id]
+            )
+        )
 
     def init_db(self):
         import sqlite3
