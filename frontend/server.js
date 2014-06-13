@@ -37,8 +37,8 @@ http.createServer(function(request, response) {
 				externalrequest(data.url, function (error, response, body) {
 			if (!error && response.statusCode == 200) {
 				var fs = require('fs');
-				var stmt = db.prepare("INSERT INTO SEARCH(DATA_TO_MATCH, HTML_LEARNING_DATA, URL, NAME, PATTERN) VALUES(?,?,?,?,?)");
-				stmt.run(data.data, body, data.url, data.project, data.pattern); 
+				var stmt = db.prepare("INSERT INTO SEARCH(DATA_TO_MATCH, HTML_LEARNING_DATA, URL, NAME, PATTERN, CRAWL_LIMIT) VALUES(?,?,?,?,?,?)");
+				stmt.run(data.data, body, data.url, data.project, data.pattern, data.limit); 
 				stmt.finalize();
 				fs.writeFile(__dirname + "/tmp/" + data.project, body, function(err) {
 					if(err) {
