@@ -5,6 +5,39 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap 101 Template</title>
+	
+	
+	<link href="nvd3/src/nv.d3.css" rel="stylesheet" type="text/css">
+
+<style>
+
+body {
+  overflow-y:scroll;
+}
+
+text {
+  font: 12px sans-serif;
+}
+
+svg {
+  display: block;
+}
+
+#chart1 svg{
+  height: 500px;
+  min-width: 100px;
+  min-height: 100px;
+/*
+  margin: 10px;
+  Minimum height and width is a good idea to prevent negative SVG dimensions...
+  For example width should be =< margin.left + margin.right + 1,
+  of course 1 pixel for the entire chart would not be very useful, BUT should not have errors
+*/
+}
+
+</style>
+	
+	
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
   <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
@@ -12,33 +45,91 @@
   <script src="d3js/d3.js"></script>
   <script language="javascript" type="text/javascript" src="jsplotlib/jquery.min.js"></script>
   <script language="javascript" type="text/javascript" src="jsplotlib/jquery.jqplot.min.js"></script>
+  
+  
+  
+	<script src="nvd3/lib/d3.v3.js"></script>
+	<script src="nvd3/nv.d3.js"></script>
+	<!-- including all the components so I don't have to minify every time I test in development -->
+	<script src="nvd3/src/tooltip.js"></script>
+	<script src="nvd3/src/utils.js"></script>
+	<script src="nvd3/src/models/axis.js"></script>
+	<script src="nvd3/src/models/discreteBar.js"></script>
+	<script src="nvd3/src/models/discreteBarChart.js"></script>
+  
+  
   <link rel="stylesheet" type="text/css" href="jsplotlib/jquery.jqplot.css" />
   </head>
   <body>
+    <div id="chart1">
+    <svg></svg>
+  </div>
 
-http://www.jqplot.com/
 
     <h1>Trending</h1>
+<script>
+nv.addGraph(function() {
+  var chart = nv.models.discreteBarChart()
+      .x(function(d) { return d.label })    //Specify the data accessors.
+      .y(function(d) { return d.value })
+      .staggerLabels(true)    //Too many bars and not enough room? Try staggering labels.
+      .tooltips(false)        //Don't show tooltips
+      .showValues(true)       //...instead, show the bar value right on top of each bar.
+      .transitionDuration(350)
+      ;
 
+  d3.select('#chart svg')
+      .datum(exampleData())
+      .call(chart);
 
-<div id="chart1" style="width:600px; height:250px;"></div>
-  <script>
-  $(document).ready(function(){
-  var cosPoints = [];
-  for (var i=0; i<2*Math.PI; i+=0.1){
-  cosPoints.push([i, Math.cos(i)]);
-  }
-  var plot1 = $.jqplot('chart1', [cosPoints], {
-   series:[{showMarker:false}],
-   axes:{
-     xaxis:{
-       label:'Angle (radians)'
-     },
-     yaxis:{
-       label:'Cosine'
-     }
-   }
-  });
-  });</script>
+  nv.utils.windowResize(chart.update);
+
+  return chart;
+});
+
+//Each bar represents a single discrete quantity.
+function exampleData() {
+ return  [ 
+    {
+      key: "Cumulative Return",
+      values: [
+        { 
+          "label" : "A Label" ,
+          "value" : -29.765957771107
+        } , 
+        { 
+          "label" : "B Label" , 
+          "value" : 0
+        } , 
+        { 
+          "label" : "C Label" , 
+          "value" : 32.807804682612
+        } , 
+        { 
+          "label" : "D Label" , 
+          "value" : 196.45946739256
+        } , 
+        { 
+          "label" : "E Label" ,
+          "value" : 0.19434030906893
+        } , 
+        { 
+          "label" : "F Label" , 
+          "value" : -98.079782601442
+        } , 
+        { 
+          "label" : "G Label" , 
+          "value" : -13.925743130903
+        } , 
+        { 
+          "label" : "H Label" , 
+          "value" : -5.1387322875705
+        }
+      ]
+    }
+  ]
+
+}
+</script>
   </body>
 </html>
