@@ -32,7 +32,11 @@ svg {
 
 </style>
 <body onload="initData()">
-
+<form method="post" action="http://localhost:8888/GetSite">
+    <input type="text" name="name">
+    <input type="text" name="email">
+    <input type="submit" value="Submit">
+</form>
   <div id="chart1">
     <svg></svg>
   </div>

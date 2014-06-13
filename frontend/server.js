@@ -6,9 +6,20 @@ var http = require("http"),
 
 http.createServer(function(request, response) {
 
+  console.log("request URL is: " + request.url);
   var uri = url.parse(request.url).pathname
     , filename = path.join(process.cwd(), uri);
 
+	if(request.url == "/GetSite"){
+	
+	
+		response.writeHead(200, {"Content-Type": "text/plain"});
+		response.write("GetSite aufgerufen!\n" + " " + request.body );
+		response.end();
+	}
+	
+
+	
   var contentTypesByExtension = {
     '.html': "text/html",
     '.css':  "text/css",
@@ -18,16 +29,46 @@ http.createServer(function(request, response) {
   path.exists(filename, function(exists) {
     if(!exists) {
 	
-		var sqlite3 = require('sqlite3').verbose();
-		var db = new sqlite3.Database(':memory:');
-		db.each("SELECT Page,Score FROM RESULT", function(err, row) {
-			console.log(row.id + ": " + row.thing);
-		});
-  
+		var sqlite3 = require('sqlite3');
+		var dbPath = "database.db";
+		fs.exists(dbPath, function(exists) {
+			if(exists) {
+				console.log("bin da");
+			} else {
+				console.log("datei nicht da");
+			}
+		}
+		);
+
+		
+	var jsonResponse =  [ 
+		{
+			"key": "Cumulative Return",
+			"values": []
+		}
+	]
+		
+	var db = new sqlite3.Database(dbPath);
 	
-      response.writeHead(404, {"Content-Type": "text/plain"});
-      response.write(row);
-      response.end();
+	var stmt = "SELECT page, score FROM result";
+	db.each(stmt, function(err, row) {
+		console.log(row.PAGE + ": " + row.SCORE);
+		
+		d = {}
+		d[row.PAGE] = row.SCORE;
+		
+		jsonResponse[0].values.push(d); 
+		
+	  	
+	}, function(err,rows) {
+		 response.writeHead(200, {"Content-Type": "application/json"});
+		 response.write(JSON.stringify(jsonResponse));
+		 response.end();
+	
+	});
+  
+
+
       return;
     }
 
@@ -50,5 +91,9 @@ http.createServer(function(request, response) {
     });
   });
 }).listen(parseInt(port, 10));
+
+
+
+
 
 console.log("Static file server running at\n  => http://localhost:" + port + "/\nCTRL + C to shutdown");
