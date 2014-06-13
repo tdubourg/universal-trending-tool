@@ -3,10 +3,11 @@ var http = require("http"),
     path = require("path"),
     fs = require("fs")
     port = process.argv[2] || 8888;
-var qs 		    = require('querystring');
+var qs = require('querystring');
 var sqlite3 = require('sqlite3');	
 var dbPath = "database.db";
 var db = new sqlite3.Database(dbPath);
+var externalrequest = require('request');
 
 http.createServer(function(request, response) {
 
@@ -29,10 +30,9 @@ http.createServer(function(request, response) {
 			response.writeHead(200, {"Content-Type": "text/plain"});
 			data = qs.parse(data)
 			//Form parameters
-			response.write("GetSite aufgerufen!\n" + "DATA_TO_MATCH" + data.data  + "Project: " + data.project + "\nUrl: " + data.url + "\nPattern: " + data.pattern + "\nLimit: " + data.limit);
+			response.write("GetSite called!\n" + "DATA_TO_MATCH" + data.data  + "Project: " + data.project + "\nUrl: " + data.url + "\nPattern: " + data.pattern + "\nLimit: " + data.limit);
 			
 			//Get Webpage
-			var externalrequest = require('request');
 			console.log("Making request to " + data.url );
 				externalrequest(data.url, function (error, response, body) {
 			if (!error && response.statusCode == 200) {
@@ -49,7 +49,7 @@ http.createServer(function(request, response) {
 			}); 
 			//console.log(body) // Print the google web page.
 		} else {
-			console.log("No webpage found! " + response.statusCode + " " + data.UrlList );
+			console.log("error requesting webpage! " + response.statusCode + " " + data.UrlList );
 		}
 })
 			
