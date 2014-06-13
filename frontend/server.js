@@ -3,6 +3,7 @@ var http = require("http"),
     path = require("path"),
     fs = require("fs")
     port = process.argv[2] || 8888;
+	
 
 http.createServer(function(request, response) {
 
@@ -11,12 +12,35 @@ http.createServer(function(request, response) {
     , filename = path.join(process.cwd(), uri);
 
 	if(request.url == "/GetSite"){
+		
+		var externalrequest = require('request');
+		externalrequest('http://www.google.com', function (error, response, body) {
+		if (!error && response.statusCode == 200) {
+			//console.log(body) // Print the google web page.
+		}
+})
 	
-	
+		
+		if (request.method == 'POST') {
+        var chunk = '';
+        request.on('data', function (data) {
+            chunk += data;
+        });
+        request.on('end', function () {
+            console.log(chunk + "<-Posted Data Test");
+        });
+    }
+		
+		
 		response.writeHead(200, {"Content-Type": "text/plain"});
-		response.write("GetSite aufgerufen!\n" + " " + request.body );
+		response.write("GetSite aufgerufen!\n" );
 		response.end();
 	}
+	
+	
+		
+
+		
 	
 
 	
@@ -55,16 +79,17 @@ http.createServer(function(request, response) {
 		console.log(row.PAGE + ": " + row.SCORE);
 		
 		d = {}
-		d[row.PAGE] = row.SCORE;
+		//d[row.PAGE] = row.SCORE;
+		d["label"] = row.PAGE;
+		d["value"] = row.SCORE;
 		
 		jsonResponse[0].values.push(d); 
 		
 	  	
 	}, function(err,rows) {
-		 response.writeHead(200, {"Content-Type": "application/json"});
+		 response.writeHead(200, {"Content-Type": "text/plain"});
 		 response.write(JSON.stringify(jsonResponse));
 		 response.end();
-	
 	});
   
 

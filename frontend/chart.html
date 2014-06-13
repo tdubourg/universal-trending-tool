@@ -78,8 +78,8 @@ function drawGraph(historicalBarChart) {
 	});
 }
 function initData() {
-	$.getJSON( "http://localhost:8888/test.json", function( data ) {
-	  drawGraph(data);
+	$.getJSON( "http://localhost:8888/test.jsons", function( data ) {
+	  drawGraph((data));
 	});
 }
 
