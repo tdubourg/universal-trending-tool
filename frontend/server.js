@@ -6,9 +6,20 @@ var http = require("http"),
 
 http.createServer(function(request, response) {
 
+  console.log("request URL is: " + request.url);
   var uri = url.parse(request.url).pathname
     , filename = path.join(process.cwd(), uri);
 
+	if(request.url == "/GetSite"){
+	
+	
+		response.writeHead(200, {"Content-Type": "text/plain"});
+		response.write("GetSite aufgerufen!\n" + " " + request.body );
+		response.end();
+	}
+	
+
+	
   var contentTypesByExtension = {
     '.html': "text/html",
     '.css':  "text/css",
@@ -80,5 +91,9 @@ http.createServer(function(request, response) {
     });
   });
 }).listen(parseInt(port, 10));
+
+
+
+
 
 console.log("Static file server running at\n  => http://localhost:" + port + "/\nCTRL + C to shutdown");
