@@ -1,1 +1,2 @@
 .read schema.sql
+.read test_data.sql
