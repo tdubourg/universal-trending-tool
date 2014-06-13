@@ -8,6 +8,17 @@ var sqlite3 = require('sqlite3');
 var dbPath = "database.db";
 var db = new sqlite3.Database(dbPath);
 var externalrequest = require('request');
+var exec = require('child_process').exec;
+
+var test_learning = function (file_path, data_to_match, callback) {
+	exec("python ../backend/learning_test.py", function (err, stdout, stderr) {
+		if (err || stdout !== "0") {
+			console.log("Test for", file_path, "and data to match", data_to_match, "failed with error code", stdout)
+			callback(false)
+		}
+		callback(true)
+	})
+}
 
 http.createServer(function(request, response) {
 
@@ -37,14 +48,24 @@ http.createServer(function(request, response) {
 				externalrequest(data.url, function (error, response, body) {
 			if (!error && response.statusCode == 200) {
 				var fs = require('fs');
+
+				var fname = __dirname + "/tmp/"+ data.project
 				var stmt = db.prepare("INSERT INTO SEARCH(DATA_TO_MATCH, HTML_LEARNING_DATA, URL, NAME, PATTERN, CRAWL_LIMIT) VALUES(?,?,?,?,?,?)");
 				stmt.run(data.data, body, data.url, data.project, data.pattern, data.limit); 
 				stmt.finalize();
-				fs.writeFile(__dirname + "/tmp/" + data.project, body, function(err) {
+				fs.writeFile(fname, body, function(err) {
 					if(err) {
 						console.log(err);
 					} else {
 				console.log("The file was saved!");
+				// Now, test it:
+				test_learning(fname, "test", function (result) {
+					if (result === true) {
+						response.write("\nThe learning test failed.")
+					} else {
+						response.write("\nThe learning test succeeded!")
+					}
+				})
 			}
 			}); 
 			//console.log(body) // Print the google web page.
