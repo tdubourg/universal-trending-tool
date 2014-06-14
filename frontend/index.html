@@ -71,9 +71,65 @@
 		
 <script>
 
+function load_iframe (url) {
+  var off = $( ".login-panel" ).offset()
+  $( ".login-panel" ).css("top", 0)
+  $( ".login-panel" ).css("left", 0)
+  $( ".login-panel" ).css("position", "relative")
+  var w = $(document).width()
+  var h = $(document).height() 
+  var l = 0.32 * w
+  var t = 0.06 * h
+  $( ".login-panel" ).animate({
+      left: "-=" + l,
+      top: "-=" + t,
+    }, 2500, function() {
+    // Animation complete.
+  });
+
+  var iframe = document.createElement('iframe')
+  console.log(iframe)
+  iframe.src = url
+  iframe.width = (1-0.1-0.32) * w
+  iframe.height = 0.9 * h
+  iframe.style.position = "absolute"
+  $(iframe).css({
+    left: 0.40 * w,
+    top: 0.05 * h
+  })
+  $( "body" ).append(
+    $(iframe)
+  )
+}
+
 //Creates a small notification bubble right up
-function notify(messagetitle, message) {
-	$.growlUI(messagetitle, message); 
+function notify(messagetitle, messagestr) {
+  $.blockUI(
+    {
+      message: 
+        '<div class="growlUI blockUI blockOverlay" style="opacity:0.65" >' +
+            '<h1 style="font-size: 1.8em;margin:0px; margin-top:10px;">'+messagetitle+'</h1>' +
+            '<h2 style="font-size: 1.45em;margin-top:10px; font-family: Georgia;">'+messagestr+'</h2>' +
+        '</div>', 
+      fadeIn: 700, 
+      fadeOut: 700, 
+      timeout: 1000, 
+      showOverlay: false, 
+      centerY: false, 
+      css: {
+          height: '90px',
+          width: '350px', 
+          top: '10px', 
+          left: $(document).width()/2-175, 
+          right: '10px', 
+          border: 'none', 
+          padding: '', 
+          backgroundColor: '#000', 
+          '-webkit-border-radius': '10px', 
+          '-moz-border-radius': '10px', 
+          color: '#fff' ,
+      } 
+  })
 }
 
 //Validates the form without the Data to match property
@@ -142,6 +198,7 @@ $(document).ready(function() {
       if (data["validity"] != "invalid") {
         tmp_path = data['tmp_path']
         notify('Notification', 'Download Request was succesful'); 
+        load_iframe(data.temporary_url)
         document.getElementById("startprocess").disabled = false;
         document.getElementById("data_to_match").disabled = false;
       }
