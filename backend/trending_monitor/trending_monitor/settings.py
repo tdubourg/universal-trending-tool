@@ -12,10 +12,10 @@ SPIDER_MODULES = ['trending_monitor.spiders']
 NEWSPIDER_MODULE = 'trending_monitor.spiders'
 
 
-# DOWNLOAD_HANDLERS = {
-#     'http': 'trending_monitor.scrapyjs.scrapyjs.dhandler.WebkitDownloadHandler',
-#     'https': 'trending_monitor.scrapyjs.scrapyjs.dhandler.WebkitDownloadHandler',
-# }
+#DOWNLOAD_HANDLERS = {
+#    'http': 'trending_monitor.scrapyjs.scrapyjs.dhandler.WebkitDownloadHandler',
+#    'https': 'trending_monitor.scrapyjs.scrapyjs.dhandler.WebkitDownloadHandler',
+#}
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'trending_monitor (+http://www.yourdomain.com)'

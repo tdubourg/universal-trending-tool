@@ -14,6 +14,7 @@ from scrapely import Scraper, HtmlPage
 from scrapy import signals
 from scrapy.xlib.pydispatch import dispatcher
 import sys
+from selenium import webdriver
 
 # import re
 
@@ -72,6 +73,7 @@ class TrendingSpider(Spider):
         self.project_id = int(pid)
         self.db_path = db_path
         self.fetch_project_data()
+        self.b = webdriver.Firefox()
         if self.aborted:
             return
         print "Loaded", len(self.start_urls), "starting urls"
@@ -107,9 +109,15 @@ class TrendingSpider(Spider):
             print "\n", response.url, "-> We are currently at depth=", str(response.meta['metadepth']), "of start_url=", response.meta['start_url']
             delta = time()-self.start_time
             print "Current crawl speed: ", self.crawled_pages, "urls crawled,", delta, "seconds,", self.crawled_pages / delta, "pages/second"
-        html_p = htmlpage_from_response(response)
+#        html_p = htmlpage_from_response(response)
+        self.b.get(response.url)
+        print "\n"*2 + "=" * 80 + "\n"*2
+        print "HEYOOO", self.b.get_text("/html/body/div[2]/div[2]/div/ul/li/span/span")
+        body = self.b.page_source
+        html_p = HtmlPage(body=body, url=response.url)
         print response.url
-        print response.body
+#        print response.body
+#        print response.body_as_unicode()
         scraped_result = self.scraper.scrape_page(html_p)
         print "\n===============================" * 2
         print scraped_result
