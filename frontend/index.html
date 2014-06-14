@@ -28,7 +28,7 @@
                         <h3 class="panel-title">Submit Your Search</h3>
                     </div>
                     <div class="panel-body">
-                        <form action="http://localhost:8888/DownloadPage" name="searchForm">
+                        <form action="http://localhost:8888/DownloadPage" name="searchForm" id="searchForm">
                             <fieldset>
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Project" name="project" type="text">
@@ -60,7 +60,7 @@
     <script src="boots/js/jquery-1.10.2.js"></script>
     <script src="boots/js/bootstrap.min.js"></script>
     <script src="boots/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-
+	
     <!-- SB Admin Scripts - Include with every page -->
     <script src="boots/js/sb-admin.js"></script>
 	
@@ -119,50 +119,95 @@ function validateForm() {
 //DownloadPage Button Click event and Method
 $(document).ready(function() { 
    $('#downloadpage').click(function() { 
-   						document.getElementById("startprocess").disabled = false;
-				document.getElementById("data_to_match").disabled = false;
+   				
 		notify('Notification', 'Download Request sent');
 		validateFormWODataMatch();
+		/*
 		postString = "project=" + document.forms["searchForm"]["project"].value + 
 		"&url=" + document.forms["searchForm"]["url"].value + 
 		"&pattern=" + document.forms["searchForm"]["pattern"].value + 
 		"&limit=" + document.forms["searchForm"]["limit"].value;
-		$.getJSON("http://localhost:8888/DownloadPage?" + postString).done(function( data ) {
-			if (data.validity = "valid") {
+		*/
+		$.post('http://localhost:8888/DownloadPage', $('#searchForm').serialize()).done(function( data ) {
+			if (data["validity"] != "invalid") {
 				notify('Notification', 'Download Request was succesful'); 
-
+				document.getElementById("startprocess").disabled = false;
+				document.getElementById("data_to_match").disabled = false;
+			}
+			else {
+				notify('Notification', 'There was an error at the Download'); 
+			}
+			alert(data);
+		})
+		
+		/*
+		$.getJSON("http://localhost:8888/DownloadPage?" + postString).done(function( data ) {
+			alert("ffasf");
+			if (data.validity != "invalid") {
+				notify('Notification', 'Download Request was succesful'); 
+				document.getElementById("startprocess").disabled = false;
+				document.getElementById("data_to_match").disabled = false;
 			}
 			else {
 				notify('Notification', 'There was an error at the Download'); 
 			}
 		})
+		*/
    }); 
 }); 
 
 //Startprocess Button Click event and Method
 $(document).ready(function() { 
-   $('#startprocess').click(function() { 
-   
-   window.location = "http://localhost:8888/chart.html";
-   
+   $('#startprocess').click(function() {    
 		notify('Notification', 'Startprocess Request sent');
 		validateForm();
+		/*
 		postString = "project=" + document.forms["searchForm"]["project"].value + 
 		"&url=" + document.forms["searchForm"]["url"].value + 
 		"&pattern=" + document.forms["searchForm"]["pattern"].value + 
 		"&data_to_match=" + document.forms["searchForm"]["data_to_match"].value + 
 		"&limit=" + document.forms["searchForm"]["limit"].value;
+		*/
+		$.post('http://localhost:8888/Startprocess', $('#searchForm').serialize())
+		if (data["validity"] != "invalid") {
+				notify('Notification', 'Download Request was succesful'); 
+				document.getElementById("startprocess").disabled = false;
+				document.getElementById("data_to_match").disabled = false;
+			}
+			else {
+				notify('Notification', 'There was an error at the Download'); 
+			}
+			alert(data);
+		})
+		/*
 		$.getJSON("http://localhost:8888/Startprocess?" + postString).done(function( data ) {
-			if (data.validity = "valid") {
+			if (data.validity != "invalid") {
 				notify('Notification', 'Startprocess Request was succesful'); 
-				
+				window.location = "http://localhost:8888/chart.html";
 			}
 			else {
 				notify('Notification', 'There was an error starting the Process'); 
 			}
 		})
+		*/
    }); 
-}); 
+});
+
+function postwith (to,p) {
+  var myForm = document.createElement("form");
+  myForm.method="post" ;
+  myForm.action = to ;
+  for (var k in p) {
+    var myInput = document.createElement("input") ;
+    myInput.setAttribute("name", k) ;
+    myInput.setAttribute("value", p[k]);
+    myForm.appendChild(myInput) ;
+  }
+  document.body.appendChild(myForm) ;
+  myForm.submit() ;
+  document.body.removeChild(myForm) ;
+}
+
 </script>
 	
 </body>

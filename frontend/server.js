@@ -42,8 +42,6 @@ http.createServer(function(request, response) {
 			console.log("POST data sent");
 		});
 		
-		
-		
 		request.addListener("end", function() {
 			console.log(request.url)
 			
@@ -106,6 +104,29 @@ http.createServer(function(request, response) {
 					}
 				})
 			}
+			else if(request.url == "/DownloadPage") {
+				response.writeHead(200, {"Content-Type": "text/plain"});
+				data = qs.parse(data);
+				externalrequest(data.url, function (error, req_resp, body) {
+					if (!error && req_resp.statusCode == 200) {
+						response.write(body);
+						response.end();
+						return;
+					} else {
+						var jsonErrorResp = [
+							{
+								"validity": "invalid",
+								"values": data.url
+							}
+						]
+						console.log("jasonfile: " + JSON.stringify(jsonErrorResp));
+						response.write(JSON.stringify(jsonErrorResp));
+						console.log("jasonfile: " + JSON.stringify(jsonErrorResp));
+						response.end();
+						return;
+					}
+				})
+			}
 		})
 	} else {
 		var contentTypesByExtension = {
@@ -114,31 +135,11 @@ http.createServer(function(request, response) {
 				'.js':   "text/javascript"
 			};
 		
-		if(request.url == "/DownloadPage") {
-				response.writeHead(200, {"Content-Type": "text/plain"});
-				data = qs.parse(data);
-				externalrequest(data.url, function (error, req_resp, body) {
-				if (!error && req_resp.statusCode == 200) {
-					response.write(body);
-					response.end();
-					return;
-				} else {
-					var jsonErrorResp = [
-						{
-							"validity": "invalid",
-							"values": data.url
-						}
-					]
-				
-					response.write(JSON.stringify(jsonErrorResp));
-					response.end();
-					return;
-				}
-			})
-		}
+		
 		if(request.url == "/GetResult"){
 			path.exists(filename, function(exists) {
 				if(!exists) {			
+					console.log("request URL is to: " + request.url);
 					fs.exists(dbPath, function(exists) {
 						if(exists) {
 							console.log("bin da");
