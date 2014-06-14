@@ -52,15 +52,15 @@ $(document).ready(function() {
     }); 
 }); 
 </script>
-<form method="post" onsubmit="http://localhost:8888/GetSite" id="form">
+<form method="post" action="http://localhost:8888/RegisterSearch" id="form">
 <div id="preloader" align="center" valign="center">
     <table>
       <tr>
-        <td><label for="project">Projekt:</label></td>
+        <td><label for="project">Project:</label></td>
         <td><input type="text" id="project" name="project" value="" class="form-control"></td>
       </tr>
       <tr>
-        <td><label for="url">Url:</label></td>
+        <td><label for="url">URL:</label></td>
         <td><input type="text" id="url" name="url" value="" class="form-control"></td>
       </tr>
       <tr>
@@ -68,12 +68,16 @@ $(document).ready(function() {
         <td><input type="text" id="pattern" name="pattern" class="form-control"></td>
       </tr>
 	  <tr>
+        <td><label for="data">Data To Match:</label></td>
+        <td><input type="text" id="data" name="data" class="form-control"></td>
+      </tr>
+	  <tr>
         <td><label for="limit">Limit:</label></td>
         <td><input type="text" id="limit" name="limit" class="form-control"></td>
       </tr>
 	  <tr>
         <td colspan="2" align="center">
-		<button id="button1" type="button" class="form-control">Submit</button>
+		<button id="button1" type="submit" class="form-control">Submit</button>
 		</td>
       </tr>
     </table>

@@ -40,7 +40,6 @@ svg {
 
 </style>
 <body onload="initData()">
-
   <div id="chart1">
     <svg></svg>
   </div>
@@ -54,11 +53,6 @@ svg {
 <script src="nvd3/src/models/discreteBar.js"></script>
 <script src="nvd3/src/models/discreteBarChart.js"></script>
 <script>
-
-
-
-
-
 
 function drawGraph(historicalBarChart) {
 	nv.addGraph(function() {  
@@ -82,7 +76,7 @@ function drawGraph(historicalBarChart) {
 	});
 }
 function initData() {
-	$.getJSON( "http://localhost:8888/test.jsons", function( data ) {
+	$.getJSON( "http://localhost:8888/GetResult", function( data ) {
 	  drawGraph((data));
 	});
 }
