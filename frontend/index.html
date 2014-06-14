@@ -70,49 +70,27 @@
 	<script src="http://malsup.github.com/chili-1.7.pack.js"></script>
 		
 <script>
-$(document).ready(function() { 
-    $('#downloadpage1').click(function() { 
-        $.blockUI({ 
-			message: $('fuck this'),
-			timeout: 2000
-		}); 
-    }); 
-});
 
 function notify(messagetitle, message) {
+	$.growlUI(messagetitle, message); 
+}
+
+function readJSON(data) {
 	$.growlUI(messagetitle, message); 
 }
 
 $(document).ready(function() { 
    $('#downloadpage').click(function() { 
 		notify('Notification', 'Download Request sent'); 
+		$.getJSON("http://localhost:8888/DownloadPage").done(function( data ) {
+			if (data.validity = "valid") {
+				notify('Notification', 'Download Request was succesful'); 
+			}
+			else {
+				notify('Notification', 'There was an error at the Download'); 
+			}
+		})	
    }); 
-}); 
-
-$(document).ready(function() { 
-    $('#demo1').click(function() { 
-        $.blockUI({ 
-            message: $('Growl Notification', 'Have a nice day!'), 
-            fadeIn: 700, 
-            fadeOut: 700, 
-            timeout: 2000, 
-            showOverlay: false, 
-            centerY: false, 
-            css: { 
-                width: '350px', 
-                top: '10px', 
-                left: '', 
-                right: '10px', 
-                border: 'none', 
-                padding: '5px', 
-                backgroundColor: '#000', 
-                '-webkit-border-radius': '10px', 
-                '-moz-border-radius': '10px', 
-                opacity: .6, 
-                color: '#fff' 
-            } 
-        }); 
-    }); 
 }); 
 
 </script>

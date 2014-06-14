@@ -76,7 +76,7 @@ function drawGraph(historicalBarChart) {
 	});
 }
 function initData() {
-	$.getJSON( "http://localhost:8888/GetResult", function( data ) {
+	$.getJSON("http://localhost:8888/GetResult", function( data ) {
 	  drawGraph((data));
 	});
 }
