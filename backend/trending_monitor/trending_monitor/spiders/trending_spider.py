@@ -108,6 +108,8 @@ class TrendingSpider(Spider):
             delta = time()-self.start_time
             print "Current crawl speed: ", self.crawled_pages, "urls crawled,", delta, "seconds,", self.crawled_pages / delta, "pages/second"
         html_p = htmlpage_from_response(response)
+        print response.url
+        print response.body
         scraped_result = self.scraper.scrape_page(html_p)
         print "\n===============================" * 2
         print scraped_result

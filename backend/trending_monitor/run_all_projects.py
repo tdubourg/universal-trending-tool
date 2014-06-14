@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/python
 import sys
 from subprocess import Popen
 
@@ -22,7 +22,7 @@ def main():
     for pid in r:
         pid = pid[0]
         exec_and_output(
-            "scrapy", 
+            "/usr/bin/scrapy", 
             [
                 "crawl", 
                 "trending_monitor",
