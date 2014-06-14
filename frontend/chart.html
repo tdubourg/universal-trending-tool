@@ -95,7 +95,7 @@ function drawGraph(historicalBarChart) {
 	});
 }
 function initData() {
-	$.getJSON( "http://localhost:8888/GetResult", function( data ) {
+	$.getJSON( "http://127.0.0.1:8888/GetResult", function( data ) {
 	  if (data.hasOwnProperty("values") && data.values.length > 0) {
 		drawGraph((data));
 		}
