@@ -11,6 +11,7 @@ var db = new sqlite3.Database(dbPath);
 var externalrequest = require('request');
 var exec = require('child_process').exec;
 var tmp = require('tmp');
+var fs = require('fs');
 
 var test_learning = function (file_path, data_to_match, callback) {
 	exec("python ../backend/learning_test.py " + file_path + " " + data_to_match, function (err, stdout, stderr) {
@@ -31,6 +32,9 @@ http.createServer(function(request, response) {
 	
 	var data = '';
 	
+	
+	
+	
 	if(request.method === "POST") {
 		request.addListener("data", function(postDataChunk) {
 			data += postDataChunk;
@@ -38,8 +42,12 @@ http.createServer(function(request, response) {
 			console.log("POST data sent");
 		});
 		
+		
+		
 		request.addListener("end", function() {
 			console.log(request.url)
+			
+			
 			if(request.url == "/RegisterSearch") {
 				response.writeHead(200, {"Content-Type": "text/plain"});
 				data = qs.parse(data)
@@ -50,8 +58,6 @@ http.createServer(function(request, response) {
 				console.log("Making request to " + data.url );
 				externalrequest(data.url, function (error, req_resp, body) {
 					if (!error && req_resp.statusCode == 200) {
-						var fs = require('fs');
-
 						tmp.file(function _tempFileCreated(err, path, fd) {
 							if (err) {
 								response.end("{'error': 'temporary file creation error'")
@@ -93,7 +99,29 @@ http.createServer(function(request, response) {
 				'.css':  "text/css",
 				'.js':   "text/javascript"
 			};
-	
+		
+		if(request.url == "/DownloadPage") {
+				response.writeHead(200, {"Content-Type": "text/plain"});
+				data = qs.parse(data);
+				externalrequest(data.url, function (error, req_resp, body) {
+				if (!error && req_resp.statusCode == 200) {
+					response.write(body);
+					response.end();
+					return;
+				} else {
+					var jsonErrorResp = [
+						{
+							"validity": "invalid",
+							"values": data.url
+						}
+					]
+				
+					response.write(JSON.stringify(jsonErrorResp));
+					response.end();
+					return;
+				}
+			})
+		}
 		if(request.url == "/GetResult"){
 			path.exists(filename, function(exists) {
 				if(!exists) {			
