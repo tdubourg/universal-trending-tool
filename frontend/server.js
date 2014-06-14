@@ -1,8 +1,8 @@
 var http = require("http"),
-    url = require("url"),
-    path = require("path"),
-    fs = require("fs")
-    port = process.argv[2] || 8888;
+	url = require("url"),
+	path = require("path"),
+	fs = require("fs")
+	port = process.argv[2] || 8888;
 var qs = require('querystring');
 var sqlite3 = require('sqlite3');	
 var dbPath = "../database.db";
@@ -23,9 +23,9 @@ var test_learning = function (file_path, data_to_match, callback) {
 
 http.createServer(function(request, response) {
 
-  console.log("request URL is: " + request.url);
-  var uri = url.parse(request.url).pathname
-    , filename = path.join(process.cwd(), uri);
+	console.log("request URL is: " + request.url);
+	var uri = url.parse(request.url).pathname
+	, filename = path.join(process.cwd(), uri);
 	
 	var data = '';
 	
@@ -77,82 +77,77 @@ http.createServer(function(request, response) {
 					console.log("error requesting webpage! " + response.statusCode + " " + data.UrlList );
 				}
 			})
-		}
-	});
-	
+		} else {
+			var contentTypesByExtension = {
+				'.html': "text/html",
+				'.css':  "text/css",
+				'.js':   "text/javascript"
+			};
 
-	
-  var contentTypesByExtension = {
-    '.html': "text/html",
-    '.css':  "text/css",
-    '.js':   "text/javascript"
-  };
+			path.exists(filename, function(exists) {
+			if(!exists) {
+			
+				
+				
+				fs.exists(dbPath, function(exists) {
+					if(exists) {
+						console.log("bin da");
+					} else {
+						console.log("datei nicht da");
+					}
+				}
+				);
 
-  path.exists(filename, function(exists) {
-    if(!exists) {
-	
-		
-		
-		fs.exists(dbPath, function(exists) {
-			if(exists) {
-				console.log("bin da");
-			} else {
-				console.log("datei nicht da");
+				
+			var jsonResponse =  [ 
+				{
+					"key": "Cumulative Return",
+					"values": []
+				}
+			]
+				
+			
+			
+			var stmt = "SELECT page, score FROM result";
+			db.each(stmt, function(err, row) {
+				console.log(row.PAGE + ": " + row.SCORE);
+				
+				d = {}
+				//d[row.PAGE] = row.SCORE;
+				d["label"] = row.PAGE;
+				d["value"] = row.SCORE;
+				
+				jsonResponse[0].values.push(d); 
+			}, function(err,rows) {
+				response.writeHead(200, {"Content-Type": "text/plain"});
+				response.write(JSON.stringify(jsonResponse));
+				response.end();
+			});
+		  
+
+
+				return;
 			}
-		}
-		);
 
-		
-	var jsonResponse =  [ 
-		{
-			"key": "Cumulative Return",
-			"values": []
+			if (fs.statSync(filename).isDirectory()) filename += '/index.html';
+				fs.readFile(filename, "binary", function(err, file) {
+					if(err) {        
+					response.writeHead(500, {"Content-Type": "text/plain"});
+					response.write(err + "\n");
+					response.end();
+					return;
+					}
+
+					var headers = {};
+					var contentType = contentTypesByExtension[path.extname(filename)];
+					if (contentType) headers["Content-Type"] = contentType;
+					response.writeHead(200, headers);
+					response.write(file, "binary");
+					response.end();
+				});
+			});		
 		}
-	]
-		
-	
-	
-	var stmt = "SELECT page, score FROM result";
-	db.each(stmt, function(err, row) {
-		console.log(row.PAGE + ": " + row.SCORE);
-		
-		d = {}
-		//d[row.PAGE] = row.SCORE;
-		d["label"] = row.PAGE;
-		d["value"] = row.SCORE;
-		
-		jsonResponse[0].values.push(d); 
-		
-	  	
-	}, function(err,rows) {
-		 response.writeHead(200, {"Content-Type": "text/plain"});
-		 response.write(JSON.stringify(jsonResponse));
-		 response.end();
 	});
-  
-
-
-      return;
-    }
-
-    if (fs.statSync(filename).isDirectory()) filename += '/index.html';
-
-    fs.readFile(filename, "binary", function(err, file) {
-      if(err) {        
-        response.writeHead(500, {"Content-Type": "text/plain"});
-        response.write(err + "\n");
-        response.end();
-        return;
-      }
-
-      var headers = {};
-      var contentType = contentTypesByExtension[path.extname(filename)];
-      if (contentType) headers["Content-Type"] = contentType;
-      response.writeHead(200, headers);
-      response.write(file, "binary");
-      response.end();
-    });
-  });
 }).listen(parseInt(port, 10));
 
 
