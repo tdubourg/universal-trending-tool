@@ -58,6 +58,8 @@ class TrendingSpider(Spider):
     links_rule = None
     urls_seen = set()
     aborted = False
+    crawled_all_pages = 0
+    score_field_text_negative_matches = []
     def make_requests_from_url(self, url):
         return Request(url, dont_filter=True, meta={'start_url': url, 'metadepth': 0})
 
@@ -80,6 +82,14 @@ class TrendingSpider(Spider):
         # This has to be set after we run fetch_project_data()
         self.links_rule = Rule(
             SgmlLinkExtractor(
+                allow='.+',
+                deny=(r'.*(spampoison.*|cgi\/.*|accounts\.google\.com|login.*|\.(js|css|png|jpe?g|gif|bmp|tiff)(\?.*)?)')
+            ),
+            follow=False,
+            callback='parse_item'
+        )
+        self.links_rule_targeted = Rule(
+            SgmlLinkExtractor(
                 allow=self.allow_regexp,
                 deny=(r'.*(spampoison.*|cgi\/.*|accounts\.google\.com|login.*|\.(js|css|png|jpe?g|gif|bmp|tiff)(\?.*)?)')
             ),
@@ -90,40 +100,50 @@ class TrendingSpider(Spider):
         dispatcher.connect(self.spider_closed, signals.spider_closed)
 
     def spider_closed(self):
+        print "Closing spider, crawled", self.crawled_pages
         if self.db is not None:
             self.db.commit()
 
+    def done(self):
+        return self.urls_limit is not 0 and (self.crawled_pages > self.urls_limit or self.crawled_all_pages > (self.urls_limit*10))
+
     def parse(self, response):
-        self.crawled_pages += 1
+        self.crawled_all_pages += 1
         # This condition is there because even if we stopped adding new requests, we might still have more requests 
         # done in total than the self.url_limits
         # why? Because we stop when we reached sefl.urls_limit in terms of _crawled_ urls and not in terms of URLs 
         # added to the queue. This allows us to ensure we always crawl _at least_ self.urls_limit URLs but in return
         # we will most likely always crawl more than self.urls_limit because we will likely add new URLs before some
         # URLs in the queue (the queue having already reached the limit) have been fetched
-        if self.urls_limit is not 0 and self.crawled_pages > self.urls_limit:
+        if self.done():
             return
         if (self.crawled_pages % self.PRINT_STATS_EVERY_X_CRAWLED_PAGES) is 0:  
-            print "\n", response.url, "-> We are currently at depth=", str(response.meta['metadepth']), "of start_url=", response.meta['start_url']
             delta = time()-self.start_time
             print "Current crawl speed: ", self.crawled_pages, "urls crawled,", delta, "seconds,", self.crawled_pages / delta, "pages/second"
-        html_p = htmlpage_from_response(response)
-        scraped_result = self.scraper.scrape_page(html_p)
-        print "\n===============================" * 2
-        print scraped_result
-        print "\n===============================" * 2
-        item = (
-            response.url,
-            scraped_result[0]['score'][0],
-            int(time())
-        )
-        self.save_to_db(item)
-        if self.urls_limit is not 0 and self.crawled_pages >= self.urls_limit:
+        if self.links_rule_targeted.link_extractor.matches(response.url):
+            print "page targeted", response.url
+            self.crawled_pages += 1
+            html_p = htmlpage_from_response(response)
+            scraped_result = self.scraper.scrape_page(html_p)
+            score = scraped_result[0]['score'][0]
+            if self.score_field_text_negative_matches:
+                for to_strip_off in self.score_field_text_negative_matches:
+                    score = score.replace(to_strip_off, '')
+            print "\n===============================" * 2
+            print "score=", score
+            print "\n===============================" * 2
+            item = (
+                response.url,
+                score,
+                int(time())
+            )
+            self.save_to_db(item)
+        if self.done(): # wasting a little bit resources here because of ">" instead of ">="
             return  # We do not scrap the links, this time
         unique_new_links = set(
             [
                 l for l in self.links_rule.link_extractor.extract_links(response) 
-                if len(l.url) <= 255 and l.nofollow is False
+                if len(l.url) <= 255 and TrendingSpider.extract_domain(l.url) == self.our_domain
             ]) - self.urls_seen
 
         print "Got", len(unique_new_links), "new links"
@@ -163,6 +183,7 @@ class TrendingSpider(Spider):
         data_to_match = {'score': d[1]}
         body = d[2]
         url = d[3]
+        self.our_domain = TrendingSpider.extract_domain(url)
         self.start_urls = [url]  # This is one of the improvements we could implement
         from scrapely.template import FragmentNotFound
         try:
@@ -173,8 +194,25 @@ class TrendingSpider(Spider):
             return self.abort()
         self.allow_regexp = d[5]
         self.urls_limit = int(d[6])
+        if d[7] != '' and d[7] is not None:
+            self.score_field_text_negative_matches = d[7].split(d[8])
+        print "urls_limit=", self.urls_limit
 
     def setup_scraper(self, body, url, data_to_scrape):
         self.scraper = Scraper()
         decoded_body = univ_encode(body)
         self.scraper.train_from_htmlpage(HtmlPage(url=url, body=decoded_body), data_to_scrape)
+    
+    @staticmethod
+    def extract_domain(url):
+        try:
+            url = url[url.index("//")+2:] # getting rid of protocol://
+        except ValueError:
+            # There was no protocol specified
+            pass
+        try:
+            url = url[:url.index("/")] # getting rid of everything after the first "/"
+        except ValueError:
+            # Maybe it was a domain-onl   y url, with no "/"
+            pass
+        return url

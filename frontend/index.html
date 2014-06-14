@@ -37,10 +37,15 @@
                                     <input class="form-control" placeholder="URL" name="url" type="text" value="">
                                 </div>
 								<div class="form-group">
-                                    <input class="form-control" placeholder="Pattern" name="pattern" type="text" value="">
+                                    <input class="form-control" placeholder="URL attern" name="pattern" type="text" value="">
+                                </div>
+                <div class="form-group">
+                                    <input class="form-control" placeholder="Data To Match" name="data_to_match" type="text" value="" disabled="disabled" id="data_to_match">
                                 </div>
 								<div class="form-group">
-                                    <input class="form-control" placeholder="Data To Match" name="data_to_match" type="text" value="" disabled="disabled" id="data_to_match">
+                                    <input class="form-control" placeholder="Replace the number by" name="data_to_match_replaced" type="text" value="" disabled="disabled" id="data_to_match_replaced">
+                                    <input id="guid" name="guid" type="hidden" value="" />
+                                    <div id="replace_instructions" ></div>
                                 </div>
 								<div class="form-group">
                                     <input class="form-control" placeholder="Limit" name="limit" type="text" value="">
@@ -70,6 +75,18 @@
 	<script src="http://malsup.github.com/chili-1.7.pack.js"></script>
 		
 <script>
+
+var guid = (function() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+               .toString(16)
+               .substring(1);
+  }
+  return function() {
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+           s4() + '-' + s4() + s4() + s4();
+  };
+})();
 
 function load_iframe (url) {
   var existing = ($("#badass_iframe").length != 0)
@@ -186,11 +203,19 @@ function validateForm() {
 }
 
 var tmp_path = ""
+var GUID = guid()
 
 //DownloadPage Button Click event and Method
 $(document).ready(function() {
+
+  $("#data_to_match_replaced").attr("placeholder", "Replace the number by "+ GUID)
+  $("#data_to_match_replaced").attr("value", "Replace the number by "+ GUID)
+  $("#guid").attr("value", GUID)
+  $("#replace_instructions").html("Replace the number by "+ GUID)
+
   $("#startprocess").attr('disabled', true)
   $("#data_to_match").attr('disabled', true)
+  $("#data_to_match_replaced").attr('disabled', true)
 
   $('#downloadpage').click(function() { 
     console.log("Clicked on DownloadPage")
@@ -207,6 +232,7 @@ $(document).ready(function() {
         load_iframe(data.temporary_url)
         document.getElementById("startprocess").disabled = false;
         document.getElementById("data_to_match").disabled = false;
+        document.getElementById("data_to_match_replaced").disabled = false;
       }
       else {
         notify('Notification', 'There was an error at the Download'); 
@@ -229,6 +255,7 @@ $(document).ready(function() {
           location.href = "/chart.html"
           $("#startprocess").disabled = false;
           $("#data_to_match").disabled = false;
+          $("#data_to_match_replaced").disabled = false;
   			}
   			else {
   				notify('Notification', 'There was an error at the Download'); 

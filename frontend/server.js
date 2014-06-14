@@ -57,9 +57,17 @@ http.createServer(function(request, response) {
 								console.log("learning succeeded")
 								response.end("{}")
 								var stmt = db.prepare(
-									"INSERT INTO search(DATA_TO_MATCH, HTML_LEARNING_DATA, URL, NAME, PATTERN, CRAWL_LIMIT)"
-									+" VALUES(?,?,?,?,?,?)");
-								stmt.run(data.data_to_match, body, data.url, data.project, data.pattern, data.limit); 
+									"INSERT INTO search(DATA_TO_MATCH, HTML_LEARNING_DATA, URL, NAME, PATTERN, CRAWL_LIMIT, DATA_CLEANING, CLEANING_GUID)"
+									+" VALUES(?,?,?,?,?,?,?, ?)");
+								stmt.run(
+									data.data_to_match, body,
+									data.url,
+									data.project,
+									data.pattern,
+									data.limit,
+									data.data_to_match_replaced,
+									data.guid
+									); 
 								stmt.finalize();
 							} else {
 								console.log("learning failed")
