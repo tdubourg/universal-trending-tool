@@ -113,7 +113,7 @@ class TrendingSpider(Spider):
         item = (
             response.url,
             scraped_result[0]['score'][0],
-            time()
+            int(time())
         )
         self.save_to_db(item)
         if self.urls_limit is not 0 and self.crawled_pages >= self.urls_limit:
@@ -134,7 +134,7 @@ class TrendingSpider(Spider):
                 item[2],
                 item[1],
                 item[0],
-                item[self.project_id]
+                self.project_id
             )
         )
 
