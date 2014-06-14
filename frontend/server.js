@@ -1,8 +1,9 @@
+"use strict"
 var http = require("http"),
 	url = require("url"),
 	path = require("path"),
 	fs = require("fs")
-	port = process.argv[2] || 8888;
+var	port = process.argv[2] || 8888;
 var qs = require('querystring');
 var sqlite3 = require('sqlite3');	
 var dbPath = "../database.db";
@@ -104,9 +105,9 @@ http.createServer(function(request, response) {
 						}
 					]
 					var stmt = "SELECT page, score FROM result";
+					var d = {}
 					db.each(stmt, function(err, row) {
 						console.log(row.PAGE + ": " + row.SCORE);
-						d = {}
 						d["label"] = row.PAGE;
 						d["value"] = row.SCORE;
 						jsonResponse[0].values.push(d); 
