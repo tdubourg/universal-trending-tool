@@ -66,7 +66,9 @@ class TrendingSpider(Spider):
     # )
 
     def __init__(self, db_path, pid):
-        print "Starting TrendingSpider..."
+        print "\n===============================" * 2
+        print "Starting TrendingSpider... FOR PID=", pid
+        print "\n===============================" * 2
         self.project_id = int(pid)
         self.db_path = db_path
         self.fetch_project_data()
