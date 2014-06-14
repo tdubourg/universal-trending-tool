@@ -1,86 +1,122 @@
 
 <!DOCTYPE html>
-<meta charset="utf-8">
+<html>
 
-<link href="nvd3/src/nv.d3.css" rel="stylesheet" type="text/css">
-<!-- Latest compiled and minified CSS -->
+<head>
 
-<!-- Optional theme -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="boots/css/bootstrap_3.css">
+    <title>Universal Trending Tool</title>
 
-<!-- Latest compiled and minified JavaScript -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-<script src="http://malsup.github.io/jquery.blockUI.js"></script>
-<script src="http://malsup.github.com/chili-1.7.pack.js"></script>
+    <!-- Core CSS - Include with every page -->
+    <link href="boots/css/bootstrap.min.css" rel="stylesheet">
+    <link href="boots/font-awesome/css/font-awesome.css" rel="stylesheet">
 
-<style>
+    <!-- SB Admin CSS - Include with every page -->
+    <link href="boots/css/sb-admin.css" rel="stylesheet">
 
-body {
-  overflow-y:scroll;
-}
+</head>
 
-text {
-  font: 12px sans-serif;
-}
-
-svg {
-  display: block;
-}
-
-#chart1 svg{
-  height: 500px;
-  min-width: 100px;
-  min-height: 100px;
-/*
-  margin: 10px;
-  Minimum height and width is a good idea to prevent negative SVG dimensions...
-  For example width should be =< margin.left + margin.right + 1,
-  of course 1 pixel for the entire chart would not be very useful, BUT should not have errors
-*/
-}
-
-</style>
 <body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Submit Your Search</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form role="form" action="http://localhost:8888/RegisterSearch">
+                            <fieldset>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Project" name="project" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="URL" name="url" type="text" value="">
+                                </div>
+								<div class="form-group">
+                                    <input class="form-control" placeholder="Pattern" name="pattern" type="text" value="">
+                                </div>
+								<div class="form-group">
+                                    <input class="form-control" placeholder="Data To Match" name="data_to_match" type="text" value="" disabled="disabled">
+                                </div>
+								<div class="form-group">
+                                    <input class="form-control" placeholder="Limit" name="limit" type="text" value="">
+                                </div>
+                                <!-- Change this to a button or input when using this as a form -->
+                                <button type="submit" class="btn btn-lg btn-success btn-block" id="downloadpage">Download Page</button>
+								<button type="submit" class="btn btn-lg btn-success btn-block" id="startprocess" disabled="disabled">Start Process</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Scripts - Include with every page -->
+    <script src="boots/js/jquery-1.10.2.js"></script>
+    <script src="boots/js/bootstrap.min.js"></script>
+    <script src="boots/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+
+    <!-- SB Admin Scripts - Include with every page -->
+    <script src="boots/js/sb-admin.js"></script>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+	<script src="http://malsup.github.io/jquery.blockUI.js"></script>
+	<script src="http://malsup.github.com/chili-1.7.pack.js"></script>
+		
 <script>
+$(document).ready(function() { 
+    $('#downloadpage1').click(function() { 
+        $.blockUI({ 
+			message: $('fuck this'),
+			timeout: 2000
+		}); 
+    }); 
+});
+
+function notify(messagetitle, message) {
+	$.growlUI(messagetitle, message); 
+}
 
 $(document).ready(function() { 
-    $('#button1').click(function() { 
-        $.blockUI(); 
-        setTimeout($.unblockUI, 2000); 
+   $('#downloadpage').click(function() { 
+		notify('Notification', 'Download Request sent'); 
+   }); 
+}); 
+
+$(document).ready(function() { 
+    $('#demo1').click(function() { 
+        $.blockUI({ 
+            message: $('Growl Notification', 'Have a nice day!'), 
+            fadeIn: 700, 
+            fadeOut: 700, 
+            timeout: 2000, 
+            showOverlay: false, 
+            centerY: false, 
+            css: { 
+                width: '350px', 
+                top: '10px', 
+                left: '', 
+                right: '10px', 
+                border: 'none', 
+                padding: '5px', 
+                backgroundColor: '#000', 
+                '-webkit-border-radius': '10px', 
+                '-moz-border-radius': '10px', 
+                opacity: .6, 
+                color: '#fff' 
+            } 
+        }); 
     }); 
 }); 
+
 </script>
-<form method="post" action="http://localhost:8888/RegisterSearch" id="form">
-<div id="preloader" align="center" valign="center">
-    <table>
-      <tr>
-        <td><label for="project">Project:</label></td>
-        <td><input type="text" id="project" name="project" value="" class="form-control"></td>
-      </tr>
-      <tr>
-        <td><label for="url">URL:</label></td>
-        <td><input type="text" id="url" name="url" value="" class="form-control"></td>
-      </tr>
-      <tr>
-        <td><label for="pattern">Pattern:</label></td>
-        <td><input type="text" id="pattern" name="pattern" class="form-control"></td>
-      </tr>
-	  <tr>
-        <td><label for="data">Data To Match:</label></td>
-        <td><input type="text" id="data" name="data" class="form-control"></td>
-      </tr>
-	  <tr>
-        <td><label for="limit">Limit:</label></td>
-        <td><input type="text" id="limit" name="limit" class="form-control"></td>
-      </tr>
-	  <tr>
-        <td colspan="2" align="center">
-		<button id="button1" type="submit" class="form-control">Submit</button>
-		</td>
-      </tr>
-    </table>
-</div>
-</form>
+	
 </body>
+
+</html>

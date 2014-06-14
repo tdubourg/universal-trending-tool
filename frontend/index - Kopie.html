@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<link href="nvd3/src/nv.d3.css" rel="stylesheet" type="text/css">
+<!-- Latest compiled and minified CSS -->
+
+<!-- Optional theme -->
+
+<link rel="stylesheet" href="boots/css/bootstrap_3.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script src="http://malsup.github.io/jquery.blockUI.js"></script>
+<script src="http://malsup.github.com/chili-1.7.pack.js"></script>
+
+<style>
+
+body {
+  overflow-y:scroll;
+}
+
+text {
+  font: 12px sans-serif;
+}
+
+svg {
+  display: block;
+}
+
+#chart1 svg{
+  height: 500px;
+  min-width: 100px;
+  min-height: 100px;
+/*
+  margin: 10px;
+  Minimum height and width is a good idea to prevent negative SVG dimensions...
+  For example width should be =< margin.left + margin.right + 1,
+  of course 1 pixel for the entire chart would not be very useful, BUT should not have errors
+*/
+}
+
+</style>
+<body>
+<script>
+
+$(document).ready(function() { 
+    $('#button1').click(function() { 
+        $.blockUI({ css: { 
+            border: 'none', 
+            padding: '15px', 
+            backgroundColor: '#000', 
+            '-webkit-border-radius': '10px', 
+            '-moz-border-radius': '10px', 
+            opacity: .5, 
+            color: '#fff' 
+        } }); 
+ 
+        setTimeout($.unblockUI, 2000); 
+    }); 
+}); 
+</script>
+<form method="post" action="http://localhost:8888/RegisterSearch" id="form">
+<div id="preloader" align="center" valign="center">
+    <table>
+      <tr>
+        <td><label for="project">Project:</label></td>
+        <td><input type="text" id="project" name="project" value="" class="form-control"></td>
+      </tr>
+      <tr>
+        <td><label for="url">URL:</label></td>
+        <td><input type="text" id="url" name="url" value="" class="form-control"></td>
+      </tr>
+      <tr>
+        <td><label for="pattern">Pattern:</label></td>
+        <td><input type="text" id="pattern" name="pattern" class="form-control"></td>
+      </tr>
+	  <tr>
+        <td><label for="data">Data To Match:</label></td>
+        <td><input type="text" id="data" name="data" class="form-control"></td>
+      </tr>
+	  <tr>
+        <td><label for="limit">Limit:</label></td>
+        <td><input type="text" id="limit" name="limit" class="form-control"></td>
+      </tr>
+	  <tr>
+        <td colspan="2" align="center">
+		<button id="button1" type="submit" class="form-control">Submit</button>
+		</td>
+      </tr>
+    </table>
+</div>
+</form>
+</body>
