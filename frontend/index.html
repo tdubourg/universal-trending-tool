@@ -72,34 +72,45 @@
 <script>
 
 function load_iframe (url) {
-  var off = $( ".login-panel" ).offset()
-  $( ".login-panel" ).css("top", 0)
-  $( ".login-panel" ).css("left", 0)
-  $( ".login-panel" ).css("position", "relative")
-  var w = $(document).width()
-  var h = $(document).height() 
-  var l = 0.32 * w
-  var t = 0.06 * h
+  var existing = ($("#badass_iframe").length != 0)
+  if (existing) {
+    $("#badass_iframe").animate({opacity: "-=1"}, 500)
+    var iframe = $("#badass_iframe")
+  };
+  if (!existing) {
+    var off = $( ".login-panel" ).offset()
+    $( ".login-panel" ).css("top", 0)
+    $( ".login-panel" ).css("left", 0)
+    $( ".login-panel" ).css("position", "relative")
+    var w = $(document).width()
+    var h = $(document).height() 
+    var l = 0.32 * w
+    var t = 0.06 * h
+
+    var iframe = document.createElement('iframe')
+    console.log(iframe)
+    iframe.id="badass_iframe"
+    iframe.width = (1-0.1-0.32) * w
+    iframe.height = 0.9 * h
+    iframe.style.position = "absolute"
+    iframe.style.opacity = 0
+    $(iframe).css({
+      left: 0.40 * w,
+      top: 0.05 * h
+    })
+    iframe = $(iframe)
+  };
+  iframe.attr("src", url)
+
   $( ".login-panel" ).animate({
       left: "-=" + l,
       top: "-=" + t,
-    }, 2500, function() {
-    // Animation complete.
+    }, 2300, function() {
+    $( "body" ).append(
+      iframe.animate({opacity: "+=1"}, 700)
+    )
   });
 
-  var iframe = document.createElement('iframe')
-  console.log(iframe)
-  iframe.src = url
-  iframe.width = (1-0.1-0.32) * w
-  iframe.height = 0.9 * h
-  iframe.style.position = "absolute"
-  $(iframe).css({
-    left: 0.40 * w,
-    top: 0.05 * h
-  })
-  $( "body" ).append(
-    $(iframe)
-  )
 }
 
 //Creates a small notification bubble right up
