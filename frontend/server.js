@@ -8,6 +8,9 @@ var qs = require('querystring');
 var sqlite3 = require('sqlite3');	
 var dbPath = "../database.db";
 var db = new sqlite3.Database(dbPath);
+db.on("error", function (err) {
+	console.error("## SQLITE ERROR##", err)
+})
 var externalrequest = require('request');
 var exec = require('child_process').exec;
 var tmp = require('tmp');
@@ -59,6 +62,9 @@ http.createServer(function(request, response) {
 								var stmt = db.prepare(
 									"INSERT INTO search(DATA_TO_MATCH, HTML_LEARNING_DATA, URL, NAME, PATTERN, CRAWL_LIMIT, DATA_CLEANING, CLEANING_GUID)"
 									+" VALUES(?,?,?,?,?,?,?, ?)");
+								stmt.on("error", function (err) {
+									console.error("INSERTION ERROR:", err)
+								})
 								stmt.run(
 									data.data_to_match, body,
 									data.url,
@@ -172,7 +178,6 @@ http.createServer(function(request, response) {
 					var stmt = "SELECT page, score FROM result";
 					var d = {}
 					db.each(stmt, function(err, row) {
-						console.log(row.PAGE + ": " + row.SCORE);
 						d["label"] = row.PAGE;
 						d["value"] = row.SCORE;
 						jsonResponse[0].values.push(d); 
