@@ -159,6 +159,7 @@ class TrendingSpider(Spider):
                 self.project_id
             )
         )
+        self.db.commit()
 
     def init_db(self):
         import sqlite3
