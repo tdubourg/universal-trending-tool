@@ -165,16 +165,26 @@ http.createServer(function(request, response) {
 					});
 					var jsonResponse = [
 						{
-							"key": "Cumulative Return",
-							"values": []
+							"page": [],
+							"score": [],
+							"timestamp"; []
 						}
 					]
-					var stmt = "SELECT page, score FROM result";
+					var stmtMaxScores = "select max(timestamp) as maxtimestamp, score, page from result group by page";
+					var stmtMinScores = "select min(timestamp) as mintimestamp, score, page from result group by page";
 					var d = {}
-					db.each(stmt, function(err, row) {
-						console.log(row.PAGE + ": " + row.SCORE);
-						d["label"] = row.PAGE;
-						d["value"] = row.SCORE;
+					db.each(stmtMaxScores, function(err, row) {
+						console.log(row.PAGE + ": " + row.SCORE + ", " + row.maxtimestamp);
+						d["page"] = row.PAGE;
+						d["score"] = row.SCORE;
+						d["timestamp"] = row.maxtimestamp;
+						jsonResponse[0].values.push(d); 
+					},
+					db.each(stmtMinScores, function(err, row) {
+						console.log(row.PAGE + ", " + row.SCORE + ", " + row.mintimestamp);
+						d["page"] = row.PAGE;
+						d["score"] = row.SCORE;
+						d["timestamp"] = row.mintimestamp;
 						jsonResponse[0].values.push(d); 
 					}, function(err,rows) {
 						response.writeHead(200, {"Content-Type": "text/plain"});
