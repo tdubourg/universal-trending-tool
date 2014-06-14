@@ -18,6 +18,12 @@
 <script src="nvd3/src/models/discreteBar.js"></script>
 <script src="nvd3/src/models/discreteBarChart.js"></script>
 
+
+	<link rel="stylesheet" href="jquery-ui/development-bundle/themes/base/jquery.ui.all.css">
+	<script src="jquery-ui/development-bundle/jquery-1.10.2.js"></script>
+	<script src="jquery-ui/development-bundle/ui/jquery.ui.core.js"></script>
+	<script src="jquery-ui/development-bundle/ui/jquery.ui.widget.js"></script>
+	<script src="jquery-ui/development-bundle/ui/jquery.ui.datepicker.js"></script>
 <style>
 
 body {
@@ -46,9 +52,25 @@ svg {
 
 </style>
 <body onload="initData()">
+<p>
+Select your time range:
+
+<input type="text" id="datepickerStart"> - <input type="text" id="datepickerEnd">
+
+</p>
+
+
+
   <div id="chart1">
     <svg></svg>
   </div>
+  <script>
+    $(function() {
+    $( "#datepickerStart" ).datepicker();
+    $( "#datepickerEnd" ).datepicker();
+  });
+  </script>
+
 <script>
 
 function drawGraph(historicalBarChart) {
@@ -74,7 +96,12 @@ function drawGraph(historicalBarChart) {
 }
 function initData() {
 	$.getJSON( "http://localhost:8888/GetResult", function( data ) {
-	  drawGraph((data));
+	  if (data.hasOwnProperty("values") && data.values.length > 0) {
+		drawGraph((data));
+		}
+		else {			
+			$("#chart1").text("No data available");
+		}
 	});
 }
 
