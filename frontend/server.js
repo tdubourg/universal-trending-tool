@@ -10,6 +10,7 @@ var dbPath = "../database.db";
 var db = new sqlite3.Database(dbPath);
 var externalrequest = require('request');
 var exec = require('child_process').exec;
+var tmp = require('tmp');
 
 var test_learning = function (file_path, data_to_match, callback) {
 	exec("python ../backend/learning_test.py " + file_path + " " + data_to_match, function (err, stdout, stderr) {
@@ -51,28 +52,33 @@ http.createServer(function(request, response) {
 					if (!error && req_resp.statusCode == 200) {
 						var fs = require('fs');
 
-						var fname = path.join(path.join(__dirname, "/tmp/"), data.project)
-						var stmt = db.prepare("INSERT INTO search(DATA_TO_MATCH, HTML_LEARNING_DATA, URL, NAME, PATTERN, CRAWL_LIMIT) VALUES(?,?,?,?,?,?)");
-						stmt.run(data.data, body, data.url, data.project, data.pattern, data.limit); 
-						stmt.finalize();
-						fs.writeFile(fname, body, function(err) {
-							if(err) {
-								console.log(err);
+						tmp.file(function _tempFileCreated(err, path, fd) {
+							if (err) {
+								response.end("{'error': 'temporary file creation error'")
 							} else {
-								console.log("The file was saved!");
-								// Now, test it:
-								test_learning(fname, data.data, function (result) {
-									if (result === true) {
-										console.log("learning succeeded")
-										response.write("\nThe learning test succeeded!")
+								fs.writeFile(path, body, function(err) {
+									if(err) {
+										console.log(err);
 									} else {
-										console.log("learning failed")
-										response.write("\nThe learning test failed.")
+										console.log("The file was saved!");
+										// Now, test it:
+										test_learning(path, data.data, function (result) {
+											if (result === true) {
+												console.log("learning succeeded")
+												response.write("\nThe learning test succeeded!")
+												var stmt = db.prepare("INSERT INTO search(DATA_TO_MATCH, HTML_LEARNING_DATA, URL, NAME, PATTERN, CRAWL_LIMIT) VALUES(?,?,?,?,?,?)");
+												stmt.run(data.data, body, data.url, data.project, data.pattern, data.limit); 
+												stmt.finalize();
+											} else {
+												console.log("learning failed")
+												response.write("\nThe learning test failed.")
+											}
+											response.end();
+										})
 									}
-									response.end();
-								})
+								}); 
 							}
-						}); 
+						});
 						//console.log(body) // Print the google web page.
 					} else {
 						console.log("error requesting webpage! " + response.statusCode + " " + data.UrlList );
