@@ -182,6 +182,7 @@ function validateForm() {
 		notify("Missing data", "Data To Match must be filled");
         return false;
     }
+  return true
 }
 
 var tmp_path = ""
@@ -197,12 +198,6 @@ $(document).ready(function() {
     if (!validateFormWODataMatch()) {
       return false
     }
-    /*
-    postString = "project=" + document.forms["searchForm"]["project"].value + 
-    "&url=" + document.forms["searchForm"]["url"].value + 
-    "&pattern=" + document.forms["searchForm"]["pattern"].value + 
-    "&limit=" + document.forms["searchForm"]["limit"].value;
-    */
     $.post('http://127.0.0.1:8888/DownloadPage', $('#searchForm').serialize(), function( data ) {
       console.log(data)
       console.log(data["validity"])
@@ -228,16 +223,10 @@ $(document).ready(function() {
     if (!validateForm()) {
       return false
     }
-    /*
-    postString = "project=" + document.forms["searchForm"]["project"].value + 
-    "&url=" + document.forms["searchForm"]["url"].value + 
-    "&pattern=" + document.forms["searchForm"]["pattern"].value + 
-    "&data_to_match=" + document.forms["searchForm"]["data_to_match"].value + 
-    "&limit=" + document.forms["searchForm"]["limit"].value;
-    */
-    $.post('http://127.0.0.1:8888/Startprocess', $('#searchForm').serialize() + "&tmp_path=" + tmp_path, function (data) {
-      if (data["validity"] != "invalid") {
+    $.post('http://127.0.0.1:8888/StartProcess', $('#searchForm').serialize() + "&tmp_path=" + tmp_path, function (data) {
+      if (!("error" in data)) {
           notify('Notification', 'Download Request was succesful'); 
+          location.href = "/chart.html"
           $("#startprocess").disabled = false;
           $("#data_to_match").disabled = false;
   			}

@@ -40,7 +40,7 @@ http.createServer(function(request, response) {
 		});
 		
 		request.addListener("end", function() {
-			console.log(request.url)
+			console.log("REQURL=",request.url)
 			
 			
 			if(request.url == "/StartProcess") {
@@ -51,10 +51,16 @@ http.createServer(function(request, response) {
 				console.log("Making request to " + data.url );
 				externalrequest(data.url, function (error, req_resp, body) {
 					if (!error && req_resp.statusCode == 200) {
-						test_learning(data.tmp_path, data.data, function (result) {
+						console.log("learning test on:", data.tmp_path)
+						test_learning(data.tmp_path.replace("/tmp", "../frontend/tmp"), data.data_to_match, function (result) {
 							if (result === true) {
 								console.log("learning succeeded")
-								response.write("\nThe learning test succeeded!")
+								response.end("{}")
+								var stmt = db.prepare(
+									"INSERT INTO search(DATA_TO_MATCH, HTML_LEARNING_DATA, URL, NAME, PATTERN, CRAWL_LIMIT)"
+									+" VALUES(?,?,?,?,?,?)");
+								stmt.run(data.data_to_match, body, data.url, data.project, data.pattern, data.limit); 
+								stmt.finalize();
 							} else {
 								console.log("learning failed")
 								var jsonErrorResp = [
@@ -63,9 +69,6 @@ http.createServer(function(request, response) {
 										"values": "learning failed"
 									}
 								]
-								var stmt = db.prepare("INSERT INTO search(DATA_TO_MATCH, HTML_LEARNING_DATA, URL, NAME, PATTERN, CRAWL_LIMIT) VALUES(?,?,?,?,?,?)");
-								stmt.run(data.data, body, data.url, data.project, data.pattern, data.limit); 
-								stmt.finalize();
 								response.write(JSON.stringify(jsonErrorResp));
 								response.end();
 							}
@@ -79,8 +82,7 @@ http.createServer(function(request, response) {
 								"values": "error requesting webpage"
 							}
 						]
-						response.write(JSON.stringify(jsonErrorResp));
-						response.end();
+						response.end(JSON.stringify(jsonErrorResp));
 					}
 				})
 			} else if(request.url == "/DownloadPage") {
@@ -198,6 +200,9 @@ http.createServer(function(request, response) {
 						response.write(file, "binary");
 						response.end();
 					});
+				} else {
+					response.writeHead(404)
+					response.end()
 				}
 			})
 		}
