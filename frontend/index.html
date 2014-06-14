@@ -28,7 +28,7 @@
                         <h3 class="panel-title">Submit Your Search</h3>
                     </div>
                     <div class="panel-body">
-                        <form action="http://localhost:8888/DownloadPage" name="searchForm" id="searchForm">
+                        <form action="http://127.0.0.1:8888/DownloadPage" name="searchForm" id="searchForm">
                             <fieldset>
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Project" name="project" type="text">
@@ -101,6 +101,7 @@ function validateFormWODataMatch() {
 		notify("Missing data", "Limit must be filled");
         return false;
     }
+    return true
 }
 
 //Validates the whole form
@@ -116,82 +117,68 @@ function validateForm() {
     }
 }
 
-//DownloadPage Button Click event and Method
-$(document).ready(function() { 
-   $('#downloadpage').click(function() { 
-   				
-		notify('Notification', 'Download Request sent');
-		validateFormWODataMatch();
-		/*
-		postString = "project=" + document.forms["searchForm"]["project"].value + 
-		"&url=" + document.forms["searchForm"]["url"].value + 
-		"&pattern=" + document.forms["searchForm"]["pattern"].value + 
-		"&limit=" + document.forms["searchForm"]["limit"].value;
-		*/
-		$.post('http://localhost:8888/DownloadPage', $('#searchForm').serialize()).done(function( data ) {
-			if (data["validity"] != "invalid") {
-				notify('Notification', 'Download Request was succesful'); 
-				document.getElementById("startprocess").disabled = false;
-				document.getElementById("data_to_match").disabled = false;
-			}
-			else {
-				notify('Notification', 'There was an error at the Download'); 
-			}
-			alert(data);
-		})
-		
-		/*
-		$.getJSON("http://localhost:8888/DownloadPage?" + postString).done(function( data ) {
-			alert("ffasf");
-			if (data.validity != "invalid") {
-				notify('Notification', 'Download Request was succesful'); 
-				document.getElementById("startprocess").disabled = false;
-				document.getElementById("data_to_match").disabled = false;
-			}
-			else {
-				notify('Notification', 'There was an error at the Download'); 
-			}
-		})
-		*/
-   }); 
-}); 
+var tmp_path = ""
 
-//Startprocess Button Click event and Method
-$(document).ready(function() { 
-   $('#startprocess').click(function() {    
-		notify('Notification', 'Startprocess Request sent');
-		validateForm();
-		/*
-		postString = "project=" + document.forms["searchForm"]["project"].value + 
-		"&url=" + document.forms["searchForm"]["url"].value + 
-		"&pattern=" + document.forms["searchForm"]["pattern"].value + 
-		"&data_to_match=" + document.forms["searchForm"]["data_to_match"].value + 
-		"&limit=" + document.forms["searchForm"]["limit"].value;
-		*/
-		$.post('http://localhost:8888/Startprocess', $('#searchForm').serialize())
-		if (data["validity"] != "invalid") {
-				notify('Notification', 'Download Request was succesful'); 
-				document.getElementById("startprocess").disabled = false;
-				document.getElementById("data_to_match").disabled = false;
-			}
-			else {
-				notify('Notification', 'There was an error at the Download'); 
-			}
-			alert(data);
-		})
-		/*
-		$.getJSON("http://localhost:8888/Startprocess?" + postString).done(function( data ) {
-			if (data.validity != "invalid") {
-				notify('Notification', 'Startprocess Request was succesful'); 
-				window.location = "http://localhost:8888/chart.html";
-			}
-			else {
-				notify('Notification', 'There was an error starting the Process'); 
-			}
-		})
-		*/
-   }); 
-});
+//DownloadPage Button Click event and Method
+$(document).ready(function() {
+  $("#startprocess").attr('disabled', true)
+  $("#data_to_match").attr('disabled', true)
+
+  $('#downloadpage').click(function() { 
+    console.log("Clicked on DownloadPage")
+    notify('Notification', 'Download Request sent');
+    if (!validateFormWODataMatch()) {
+      return false
+    }
+    /*
+    postString = "project=" + document.forms["searchForm"]["project"].value + 
+    "&url=" + document.forms["searchForm"]["url"].value + 
+    "&pattern=" + document.forms["searchForm"]["pattern"].value + 
+    "&limit=" + document.forms["searchForm"]["limit"].value;
+    */
+    $.post('http://127.0.0.1:8888/DownloadPage', $('#searchForm').serialize(), function( data ) {
+      console.log(data)
+      console.log(data["validity"])
+      if (data["validity"] != "invalid") {
+        tmp_path = data['tmp_path']
+        notify('Notification', 'Download Request was succesful'); 
+        document.getElementById("startprocess").disabled = false;
+        document.getElementById("data_to_match").disabled = false;
+      }
+      else {
+        notify('Notification', 'There was an error at the Download'); 
+      }
+    }, 'json')
+  console.log("Hey?")
+  $("#startprocess").attr('disabled', true)
+  $("#data_to_match").attr('disabled', true)
+
+  }); 
+ $('#startprocess').click(function() {    
+    console.log("Clicked on startprocess")
+  	notify('Notification', 'Startprocess Request sent');
+    if (!validateForm()) {
+      return false
+    }
+    /*
+    postString = "project=" + document.forms["searchForm"]["project"].value + 
+    "&url=" + document.forms["searchForm"]["url"].value + 
+    "&pattern=" + document.forms["searchForm"]["pattern"].value + 
+    "&data_to_match=" + document.forms["searchForm"]["data_to_match"].value + 
+    "&limit=" + document.forms["searchForm"]["limit"].value;
+    */
+    $.post('http://127.0.0.1:8888/Startprocess', $('#searchForm').serialize() + "&tmp_path=" + tmp_path, function (data) {
+      if (data["validity"] != "invalid") {
+          notify('Notification', 'Download Request was succesful'); 
+          $("#startprocess").disabled = false;
+          $("#data_to_match").disabled = false;
+  			}
+  			else {
+  				notify('Notification', 'There was an error at the Download'); 
+  			}
+  	}, 'json')
+  })
+})
 
 function postwith (to,p) {
   var myForm = document.createElement("form");

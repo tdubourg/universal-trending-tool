@@ -25,15 +25,12 @@ var test_learning = function (file_path, data_to_match, callback) {
 }
 
 http.createServer(function(request, response) {
-
+	var server_base = 'http://127.0.0.1:' + port
 	console.log("request URL is: " + request.url);
 	var uri = url.parse(request.url).pathname
 	, filename = path.join(process.cwd(), uri);
 	
 	var data = '';
-	
-	
-	
 	
 	if(request.method === "POST") {
 		request.addListener("data", function(postDataChunk) {
@@ -49,48 +46,31 @@ http.createServer(function(request, response) {
 			if(request.url == "/StartProcess") {
 				response.writeHead(200, {"Content-Type": "text/plain"});
 				data = qs.parse(data)
-				//Form parameters
-				response.write("GetSite called!\n" + "DATA_TO_MATCH" + data.data  + "Project: " + data.project + "\nUrl: " + data.url + "\nPattern: " + data.pattern + "\nLimit: " + data.limit);
 				
 				//Get Webpage
 				console.log("Making request to " + data.url );
 				externalrequest(data.url, function (error, req_resp, body) {
 					if (!error && req_resp.statusCode == 200) {
-						tmp.file(function _tempFileCreated(err, path, fd) {
-							if (err) {
-								response.end("{'error': 'temporary file creation error'")
+						test_learning(data.tmp_path, data.data, function (result) {
+							if (result === true) {
+								console.log("learning succeeded")
+								response.write("\nThe learning test succeeded!")
 							} else {
-								fs.writeFile(path, body, function(err) {
-									if(err) {
-										console.log(err);
-									} else {
-										console.log("The file was saved!");
-										// Now, test it:
-										test_learning(path, data.data, function (result) {
-											if (result === true) {
-												console.log("learning succeeded")
-												response.write("\nThe learning test succeeded!")
-												var stmt = db.prepare("INSERT INTO search(DATA_TO_MATCH, HTML_LEARNING_DATA, URL, NAME, PATTERN, CRAWL_LIMIT) VALUES(?,?,?,?,?,?)");
-												stmt.run(data.data, body, data.url, data.project, data.pattern, data.limit); 
-												stmt.finalize();
-											} else {
-												console.log("learning failed")
-												var jsonErrorResp = [
-													{
-														"validity": "invalid",
-														"values": "learning failed"
-													}
-												]
-												response.write(JSON.stringify(jsonErrorResp));
-												response.end();
-											}
-											response.end();
-										})
+								console.log("learning failed")
+								var jsonErrorResp = [
+									{
+										"validity": "invalid",
+										"values": "learning failed"
 									}
-								}); 
+								]
+								var stmt = db.prepare("INSERT INTO search(DATA_TO_MATCH, HTML_LEARNING_DATA, URL, NAME, PATTERN, CRAWL_LIMIT) VALUES(?,?,?,?,?,?)");
+								stmt.run(data.data, body, data.url, data.project, data.pattern, data.limit); 
+								stmt.finalize();
+								response.write(JSON.stringify(jsonErrorResp));
+								response.end();
 							}
-						});
-						//console.log(body) // Print the google web page.
+							response.end();
+						})
 					} else {
 						console.log("error requesting webpage! " + response.statusCode + " " + data.UrlList );
 						var jsonErrorResp = [
@@ -105,20 +85,46 @@ http.createServer(function(request, response) {
 				})
 			}
 			else if(request.url == "/DownloadPage") {
-				response.writeHead(200, {"Content-Type": "text/plain"});
+				console.log("Requested DownloadPage")
+				response.writeHead(200, {
+					"Content-Type": "text/plain",
+					'Access-Control-Request-Headers': 'X-Requested-With, accept, content-type',
+					'Access-Control-Allow-Methods': 'GET, POST'
+				});
 				data = qs.parse(data);
+				console.log("Starting the ext req")
 				externalrequest(data.url, function (error, req_resp, body) {
+					console.log("Ext req is done")
 					if (!error && req_resp.statusCode == 200) {
-						response.write(body);
-						response.end();
+						console.log("And everything is fine")
+						tmp.file(function _tempFileCreated(err, path, fd) {
+							if (err) {
+								response.end("{'error': 'temporary file creation error'")
+							} else {
+								fs.writeFile(path, body, function(err) {
+									if(err) {
+										console.log(err);
+									} else {
+										console.log("The file was saved!");
+										response.end(JSON.stringify(
+											{
+												'temporary_url': server_base + path,
+												'tmp_path': path,
+												'validity': 'valid'
+											}
+										));
+									}
+								}); 
+							}
+						});
 						return;
 					} else {
-						var jsonErrorResp = [
+						console.log("But error happened")
+						var jsonErrorResp = 
 							{
 								"validity": "invalid",
 								"values": data.url
 							}
-						]
 						console.log("jasonfile: " + JSON.stringify(jsonErrorResp));
 						response.write(JSON.stringify(jsonErrorResp));
 						console.log("jasonfile: " + JSON.stringify(jsonErrorResp));
