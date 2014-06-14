@@ -83,8 +83,7 @@ http.createServer(function(request, response) {
 						response.end();
 					}
 				})
-			}
-			else if(request.url == "/DownloadPage") {
+			} else if(request.url == "/DownloadPage") {
 				console.log("Requested DownloadPage")
 				response.writeHead(200, {
 					"Content-Type": "text/plain",
@@ -97,11 +96,12 @@ http.createServer(function(request, response) {
 					console.log("Ext req is done")
 					if (!error && req_resp.statusCode == 200) {
 						console.log("And everything is fine")
-						tmp.file(function _tempFileCreated(err, path, fd) {
+						tmp.tmpName(function (err, path, fd) {
 							if (err) {
 								response.end("{'error': 'temporary file creation error'")
 							} else {
-								fs.writeFile(path, body, function(err) {
+								var path2 = path.replace('/tmp/', './tmp/')
+								fs.writeFile(path2, body, function(err) {
 									if(err) {
 										console.log(err);
 									} else {
