@@ -3,14 +3,20 @@
 <meta charset="utf-8">
 
 <link href="nvd3/src/nv.d3.css" rel="stylesheet" type="text/css">
-<!-- Latest compiled and minified CSS -->
-
-<!-- Optional theme -->
-
 <link rel="stylesheet" href="boots/css/bootstrap_3.css">
 
 <!-- Latest compiled and minified JavaScript -->
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script src="jquery/jquery.js"></script>
+<script src="boots/js/bootstrap.min.js"></script>
+<script src="nvd3/lib/d3.v3.js"></script>
+<script src="nvd3/nv.d3.js"></script>
+
+<!-- including all the components so I don't have to minify every time I test in development -->
+<script src="nvd3/src/tooltip.js"></script>
+<script src="nvd3/src/utils.js"></script>
+<script src="nvd3/src/models/axis.js"></script>
+<script src="nvd3/src/models/discreteBar.js"></script>
+<script src="nvd3/src/models/discreteBarChart.js"></script>
 
 <style>
 
@@ -43,15 +49,6 @@ svg {
   <div id="chart1">
     <svg></svg>
   </div>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="nvd3/lib/d3.v3.js"></script>
-<script src="nvd3/nv.d3.js"></script>
-<!-- including all the components so I don't have to minify every time I test in development -->
-<script src="nvd3/src/tooltip.js"></script>
-<script src="nvd3/src/utils.js"></script>
-<script src="nvd3/src/models/axis.js"></script>
-<script src="nvd3/src/models/discreteBar.js"></script>
-<script src="nvd3/src/models/discreteBarChart.js"></script>
 <script>
 
 function drawGraph(historicalBarChart) {

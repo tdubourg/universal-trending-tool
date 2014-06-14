@@ -28,7 +28,7 @@
                         <h3 class="panel-title">Submit Your Search</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form" action="http://localhost:8888/RegisterSearch">
+                        <form action="http://localhost:8888/DownloadPage" name="searchForm">
                             <fieldset>
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Project" name="project" type="text">
@@ -40,14 +40,14 @@
                                     <input class="form-control" placeholder="Pattern" name="pattern" type="text" value="">
                                 </div>
 								<div class="form-group">
-                                    <input class="form-control" placeholder="Data To Match" name="data_to_match" type="text" value="" disabled="disabled">
+                                    <input class="form-control" placeholder="Data To Match" name="data_to_match" type="text" value="" disabled="disabled" id="data_to_match">
                                 </div>
 								<div class="form-group">
                                     <input class="form-control" placeholder="Limit" name="limit" type="text" value="">
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
-                                <button type="submit" class="btn btn-lg btn-success btn-block" id="downloadpage">Download Page</button>
-								<button type="submit" class="btn btn-lg btn-success btn-block" id="startprocess" disabled="disabled">Start Process</button>
+                                <button type="button" class="btn btn-lg btn-success btn-block" id="downloadpage">Download Page</button>
+								<button type="button" class="btn btn-lg btn-success btn-block" id="startprocess" disabled="disabled">Start Process</button>
                             </fieldset>
                         </form>
                     </div>
@@ -71,25 +71,96 @@
 		
 <script>
 
+//Creates a small notification bubble right up
 function notify(messagetitle, message) {
 	$.growlUI(messagetitle, message); 
 }
 
-function readJSON(data) {
-	$.growlUI(messagetitle, message); 
+//Validates the form without the Data to match property
+function validateFormWODataMatch() {
+    var x = document.forms["searchForm"]["project"].value;
+    if (x == null || x == "") {
+		notify("Missing data", "Project must be filled");
+        return false;
+    }
+	
+	var x = document.forms["searchForm"]["url"].value;
+    if (x == null || x == "") {
+		notify("Missing data", "URL must be filled");
+        return false;
+    }
+	
+	var x = document.forms["searchForm"]["pattern"].value;
+    if (x == null || x == "") {
+		notify("Missing data", "Pattern must be filled");
+        return false;
+    }
+	
+	var x = document.forms["searchForm"]["limit"].value;
+    if (x == null || x == "") {
+		notify("Missing data", "Limit must be filled");
+        return false;
+    }
 }
 
+//Validates the whole form
+function validateForm() {
+    if (!validateFormWODataMatch) {
+		return false;
+	}
+	
+	var x = document.forms["searchForm"]["data_to_match"].value;
+    if (x == null || x == "") {
+		notify("Missing data", "Data To Match must be filled");
+        return false;
+    }
+}
+
+//DownloadPage Button Click event and Method
 $(document).ready(function() { 
    $('#downloadpage').click(function() { 
-		notify('Notification', 'Download Request sent'); 
-		$.getJSON("http://localhost:8888/DownloadPage").done(function( data ) {
+   						document.getElementById("startprocess").disabled = false;
+				document.getElementById("data_to_match").disabled = false;
+		notify('Notification', 'Download Request sent');
+		validateFormWODataMatch();
+		postString = "project=" + document.forms["searchForm"]["project"].value + 
+		"&url=" + document.forms["searchForm"]["url"].value + 
+		"&pattern=" + document.forms["searchForm"]["pattern"].value + 
+		"&limit=" + document.forms["searchForm"]["limit"].value;
+		$.getJSON("http://localhost:8888/DownloadPage?" + postString).done(function( data ) {
 			if (data.validity = "valid") {
 				notify('Notification', 'Download Request was succesful'); 
+
 			}
 			else {
 				notify('Notification', 'There was an error at the Download'); 
 			}
-		})	
+		})
+   }); 
+}); 
+
+//Startprocess Button Click event and Method
+$(document).ready(function() { 
+   $('#startprocess').click(function() { 
+   
+   window.location = "http://localhost:8888/chart.html";
+   
+		notify('Notification', 'Startprocess Request sent');
+		validateForm();
+		postString = "project=" + document.forms["searchForm"]["project"].value + 
+		"&url=" + document.forms["searchForm"]["url"].value + 
+		"&pattern=" + document.forms["searchForm"]["pattern"].value + 
+		"&data_to_match=" + document.forms["searchForm"]["data_to_match"].value + 
+		"&limit=" + document.forms["searchForm"]["limit"].value;
+		$.getJSON("http://localhost:8888/Startprocess?" + postString).done(function( data ) {
+			if (data.validity = "valid") {
+				notify('Notification', 'Startprocess Request was succesful'); 
+				
+			}
+			else {
+				notify('Notification', 'There was an error starting the Process'); 
+			}
+		})
    }); 
 }); 
 
