@@ -48,7 +48,7 @@ http.createServer(function(request, response) {
 			console.log(request.url)
 			
 			
-			if(request.url == "/RegisterSearch") {
+			if(request.url == "/StartProcess") {
 				response.writeHead(200, {"Content-Type": "text/plain"});
 				data = qs.parse(data)
 				//Form parameters
@@ -77,7 +77,14 @@ http.createServer(function(request, response) {
 												stmt.finalize();
 											} else {
 												console.log("learning failed")
-												response.write("\nThe learning test failed.")
+												var jsonErrorResp = [
+													{
+														"validity": "invalid",
+														"values": "learning failed"
+													}
+												]
+												response.write(JSON.stringify(jsonErrorResp));
+												response.end();
 											}
 											response.end();
 										})
@@ -88,7 +95,14 @@ http.createServer(function(request, response) {
 						//console.log(body) // Print the google web page.
 					} else {
 						console.log("error requesting webpage! " + response.statusCode + " " + data.UrlList );
-						response.end("{'error': 'cannot crawl url'}")
+						var jsonErrorResp = [
+							{
+								"validity": "invalid",
+								"values": "error requesting webpage"
+							}
+						]
+						response.write(JSON.stringify(jsonErrorResp));
+						response.end();
 					}
 				})
 			}
