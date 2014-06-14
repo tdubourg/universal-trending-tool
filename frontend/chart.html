@@ -56,7 +56,6 @@ svg {
 Select your time range:
 
 <input type="text" id="datepickerStart"> - <input type="text" id="datepickerEnd">
-
 </p>
 
 
@@ -69,9 +68,7 @@ Select your time range:
     $( "#datepickerStart" ).datepicker();
     $( "#datepickerEnd" ).datepicker();
   });
-  </script>
-
-<script>
+  </script><script>
 
 function drawGraph(historicalBarChart) {
 	nv.addGraph(function() {  
@@ -79,7 +76,6 @@ function drawGraph(historicalBarChart) {
 		  .x(function(d) { return d.label })
 		  .y(function(d) { return d.value })
 		  .staggerLabels(true)
-		  //.staggerLabels(historicalBarChart[0].values.length > 8)
 		  .tooltips(false)
 		  .showValues(true)
 		  .transitionDuration(250)
@@ -96,12 +92,13 @@ function drawGraph(historicalBarChart) {
 }
 function initData() {
 	$.getJSON( "http://127.0.0.1:8888/GetResult", function( data ) {
-	  if (data.hasOwnProperty("values") && data.values.length > 0) {
-		drawGraph((data));
-		}
-		else {			
-			$("#chart1").text("No data available");
-		}
+    console.log("TAG!", data)
+	  // if ("values" in data && data.values.length > 0) {
+  		drawGraph(data);
+		// }
+		// else {			
+		// 	$("#chart1").text("No data available");
+		// }
 	});
 }
 

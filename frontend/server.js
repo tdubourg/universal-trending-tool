@@ -17,7 +17,7 @@ var tmp = require('tmp');
 var fs = require('fs');
 
 var test_learning = function (file_path, data_to_match, callback) {
-	exec("python ../backend/learning_test.py " + file_path + " " + data_to_match, function (err, stdout, stderr) {
+	exec("python ../backend/learning_test.py " + file_path + " '" + data_to_match.replace("'", "\'") + "'", function (err, stdout, stderr) {
 		if (err || stdout.replace("\n",'') !== '0') {
 			console.log("Test for", file_path, "and data to match=", data_to_match, "failed with error code", stdout)
 			callback(false)
@@ -79,6 +79,7 @@ http.createServer(function(request, response) {
 								console.log("learning failed")
 								var jsonErrorResp = [
 									{
+										"error": "We did not find the data in the page",
 										"validity": "invalid",
 										"values": "learning failed"
 									}
@@ -169,34 +170,57 @@ http.createServer(function(request, response) {
 							console.log("datei nicht da");
 						}
 					});
-					var jsonResponse = [
+					var jsonResponse = 
 						{
-							"page": [],
-							"score": [],
-							"timestamp"; []
+							"key": "Trending score over selected time range",
+							"values": []
 						}
-					]
+					
 					var stmtMaxScores = "select max(timestamp) as maxtimestamp, score, page from result group by page";
 					var stmtMinScores = "select min(timestamp) as mintimestamp, score, page from result group by page";
 					
+					var urls_to_trending_score = {}
+					var max_timestamps = {}
+					var i =0;
 					db.each(stmtMaxScores, function(err, row) {
-						console.log(row.PAGE + ": " + row.SCORE + ", " + row.maxtimestamp);
-						d["page"] = row.PAGE;
-						d["score"] = row.SCORE;
-						d["timestamp"] = row.maxtimestamp;
-						jsonResponse[0].values.push(d); 
-					}),
-					db.each(stmtMinScores, function(err, row) {
-						console.log(row.PAGE + ", " + row.SCORE + ", " + row.mintimestamp);
-						d["page"] = row.PAGE;
-						d["score"] = row.SCORE;
-						d["timestamp"] = row.mintimestamp;
-						jsonResponse[0].values.push(d); 
-					}, function(err,rows) {
-						response.writeHead(200, {"Content-Type": "text/plain"});
-						response.write(JSON.stringify(jsonResponse));
-						response.end();
-					});
+						// console.log("there", row)
+						// console.log("here", row)
+						urls_to_trending_score[row.PAGE] = row.SCORE;
+						max_timestamps[row.PAGE] = row.maxtimestamp;
+					}, function () {
+						// console.log(urls_to_trending_score)
+						// console.log(max_timestamps)
+						db.each(stmtMinScores, function(err, row2) {
+							// console.log(row2)
+							// Substract the score at the min timestamp
+							// and divide by the timestamp delta
+							var denominator = parseInt(max_timestamps[row2.PAGE]) - parseInt(row2.mintimestamp)
+							if (denominator == 0) {
+								var result = (parseInt(urls_to_trending_score[row2.PAGE]) - parseInt(row2.SCORE))
+							} else  {
+								var result = (parseInt(urls_to_trending_score[row2.PAGE]) - parseInt(row2.SCORE)) / denominator;
+							}
+							if (result) {
+								jsonResponse['values'].push({
+									'label': row2.PAGE, 
+									'value': result * 10000
+								})
+							};
+						}, function(err,rows) {
+							response.writeHead(200, {"Content-Type": "text/plain"});
+							var items = jsonResponse.values
+							items.sort(function (a, b) {
+							    if (a.value < b.value)
+							      return 1;
+							    if (a.value > b.value)
+							      return -1;
+							    // a must be equal to b
+							    return 0;
+							});
+							response.write(JSON.stringify([jsonResponse]));
+							response.end();
+						});
+					})
 					return;
 				}				
 			});		
