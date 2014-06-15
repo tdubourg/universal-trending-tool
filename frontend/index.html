@@ -107,6 +107,7 @@ function load_iframe (url) {
     var iframe = document.createElement('iframe')
     console.log(iframe)
     iframe.id="badass_iframe"
+    iframe.style.border="1px solid gray"
     iframe.width = (1-0.1-0.32) * w
     iframe.height = 0.9 * h
     iframe.style.position = "absolute"
@@ -122,7 +123,7 @@ function load_iframe (url) {
   $( ".login-panel" ).animate({
       left: "-=" + l,
       top: "-=" + t,
-    }, 2300, function() {
+    }, 1800, function() {
     $( "body" ).append(
       iframe.animate({opacity: "+=1"}, 700)
     )

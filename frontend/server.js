@@ -181,6 +181,7 @@ http.createServer(function(request, response) {
 					
 					var urls_to_trending_score = {}
 					var max_timestamps = {}
+					var pages_to_labels = {}
 					var i =0;
 					db.each(stmtMaxScores, function(err, row) {
 						// console.log("there", row)
@@ -201,8 +202,9 @@ http.createServer(function(request, response) {
 								var result = (parseInt(urls_to_trending_score[row2.PAGE]) - parseInt(row2.SCORE)) / denominator;
 							}
 							if (result) {
+								pages_to_labels[row2.PAGE] = i++;
 								jsonResponse['values'].push({
-									'label': row2.PAGE, 
+									'label': pages_to_labels[row2.PAGE], 
 									'value': result * 10000
 								})
 							};
@@ -217,6 +219,7 @@ http.createServer(function(request, response) {
 							    // a must be equal to b
 							    return 0;
 							});
+							jsonResponse['legend'] = pages_to_labels
 							response.write(JSON.stringify([jsonResponse]));
 							response.end();
 						});

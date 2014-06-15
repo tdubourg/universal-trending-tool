@@ -25,7 +25,9 @@
 	<script src="jquery-ui/development-bundle/ui/jquery.ui.widget.js"></script>
 	<script src="jquery-ui/development-bundle/ui/jquery.ui.datepicker.js"></script>
 <style>
-
+#legend p:hover {
+  font-size:1.1em;
+}
 body {
   overflow-y:scroll;
 }
@@ -63,6 +65,7 @@ Select your time range:
   <div id="chart1">
     <svg></svg>
   </div>
+  <div id="legend" style="height: 50%; overflow:scroll;padding:0.25em;padding-left:3em;"></div>
   <script>
     $(function() {
     $( "#datepickerStart" ).datepicker();
@@ -86,6 +89,12 @@ function drawGraph(historicalBarChart) {
 		  .call(chart);
 
 	  nv.utils.windowResize(chart.update);
+    console.log("HEY I AM HERE!")
+var pages = historicalBarChart[0].legend;
+for(page in pages) {
+  console.log(page,pages[page])
+  $("#legend").append($("<p style='line-height:0.7em; font-size: 0.9em;'>&nbsp;&nbsp;&nbsp;<b>" + pages[page] + ":</b> " + page + "</p>"))
+}
 
 	  return chart;
 	});
