@@ -22,13 +22,13 @@ Note: The program currently only _fully_ works on **UNIX-based** systems (Mac/Li
 
 - SQLite3
 - NodeJS
-- Node packages:
+- Node packages (installation handled by `frontend/install.sh`):
     + sqite3
     + tmp
     + request
     + validator
 - Python **2.7**
-- Python packages:
+- Python packages (installation handled by `backend/install_script.sh`):
     + Scrapy >= 0.22.2
     + Scrapely
     + Slybot
