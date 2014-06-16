@@ -18,12 +18,15 @@ Tool for Monitoring Trending Pages on Websites
 
 # Installation notes / requirements
 
+Note: The program currently only _fully_ works on **UNIX-based** systems (Mac/Linux/BSD/etc.) and on **localhost** but nothing is preventing it to be adapted to Windows / non-localhost, just hardcoded (_hackathon-coded_) paths have to be changed + you will have to handle python packages installation by yourself.
+
 - SQLite3
 - NodeJS
 - Node packages:
     + sqite3
     + tmp
-    + 
+    + request
+    + validator
 - Python **2.7**
 - Python packages:
     + Scrapy >= 0.22.2
@@ -35,7 +38,6 @@ Optional dependency for JS rendering:
 
 - Selenium python package
 - jswebkit python package
-
 
 # TODO
 
